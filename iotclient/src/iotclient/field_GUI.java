@@ -114,7 +114,9 @@ public class field_GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
+        String[] petStrings = { "Field1", "Field2", "Field3", "Field4", "" };
+        petList.setSelectedIndex(4);
+        petList.addActionListener(this);
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
