@@ -32,6 +32,32 @@ public class Message {
         this.password = password;
     }
     
-   
+    public void setMessage_AddFieldMessage(String fieldName, String fieldId){
+        this.isAddFieldMessage = true;
+        this.fieldName = fieldName;
+        this.fieldId = fieldId;  
+    }
     
+    public void setMessage_RemoveFieldMessage(String fieldName, String fieldId){
+        this.isRemoveFieldMessage = true;
+        this.fieldName = fieldName;
+        this.fieldId = fieldId;  
+    }
+    
+    public void setMessage_AddWeatherStationtoField(String weatherStationName,String weatherStationId){
+        this.isAddWeatherStationToFieldMessage = true;
+        this.weatherStationName = weatherStationName;
+        this.weatherStationId = weatherStationId;
+    }
+    
+    public void setMessage_RemoveWeatherStationfromField(String weatherStationName,String weatherStationId){
+        this.isAddWeatherStationToFieldMessage = true;
+        this.weatherStationName = weatherStationName;
+        this.weatherStationId = weatherStationId;
+    }
+    
+    public void setMessage_weatherStationData(String weatherStationData){
+        this.isAddWeatherStationDataMessage = true;
+        this.weatherStationData = weatherStationData;
+    }
 }
