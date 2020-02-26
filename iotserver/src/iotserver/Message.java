@@ -26,6 +26,13 @@ public class Message {
     String weatherStationId;
     String weatherStationData;
     
+    double temperature;
+    double windSpeed;
+    double barometricPressure;
+    double relativeHumidity;
+    int airQuality;
+    
+    
     public void setMessage_AuthUser(String username,String password){
         this.isAuthMessage = true;
         this.username = username;
