@@ -10,12 +10,10 @@ package iotserver;
  * @author ivica
  */
 public class Iotserver {
-
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        // TODO code application logic here
+        DatabaseConnection conn = new DatabaseConnection();
+        conn.openDbFile("database");
+        
     }
     
 }
