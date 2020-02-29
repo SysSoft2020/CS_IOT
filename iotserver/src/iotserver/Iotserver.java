@@ -13,6 +13,9 @@ import java.sql.SQLException;
 public class Iotserver {
  
     public static void main(String[] args) {
+        Message msg = new Message();
+        msg.authUser("username", "password");
+        /*
         try {
             Class.forName("org.sqlite.JDBC");
             String dbURL = "jdbc:sqlite:database.db";
@@ -31,5 +34,6 @@ public class Iotserver {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+        */
     }
 }
