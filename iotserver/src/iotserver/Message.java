@@ -27,7 +27,7 @@ public class Message {
         this.outputStream = null;
     }
 
-    private void setupSocketConnectionToServer() {
+    private void setupConnectionToServer() {
         InetAddress ip;
         try {
             try {
@@ -68,7 +68,7 @@ public class Message {
         }
         boolean result = false;
      
-        setupSocketConnectionToServer();
+        setupConnectionToServer();
         try {
 
             try {
@@ -90,6 +90,7 @@ public class Message {
             sendToTerminal(data);
             return new JSONArray();
         }
+        setupConnectionToServer();
         try {
 
             try {
@@ -100,11 +101,10 @@ public class Message {
             try {
                 JSONArray result = new JSONArray();
 
+                
                 JSONParser jsonParser = new JSONParser();
                 result.add((jsonParser.parse(inputStream.readUTF())));
                 return result;
-
-
 
             } catch (ParseException ex) {
                 Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
@@ -113,20 +113,30 @@ public class Message {
         } catch (IOException ex) {
             Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
         }
+        closeConnectionToServer();
         return null;
     }
 
     public boolean authUser(String username, String password) {
         JSONArray data = new JSONArray();
-        data.add("AUTHREQUEST");
-        data.add(username);
-        data.add(password);
+        JSONObject userData = new JSONObject();
+        userData.put("username", username);
+        userData.put("password", password);
+        JSONObject request = new JSONObject();
+        request.put("AUTHUSER", userData);
+        data.add(request);
         return sendWithBooleanReturn(data);
     }
+    
 
-    JSONArray addField() {
-
-        return new JSONArray();
+    JSONArray addField(String fieldname) {
+        JSONArray data = new JSONArray();
+        JSONObject fieldData = new JSONObject();
+        fieldData.put("fieldName", fieldname);
+        JSONObject request = new JSONObject();
+        request.put("FIELDADD", fieldData);
+        data.add(request);
+        return sendWithJsonReturn(data);
     }
 
 }

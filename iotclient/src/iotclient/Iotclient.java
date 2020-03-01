@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 package iotclient;
-
+import org.json.simple.*;
+import org.json.simple.parser.*;
 /**
  *
  * @author ivica
@@ -15,7 +16,11 @@ public class Iotclient {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Message msg = new Message();
+        //msg.authUser("username", "password");
+        JSONArray data = msg.addField("naem213");
+        System.out.println(data);
+
     }
     
 }
