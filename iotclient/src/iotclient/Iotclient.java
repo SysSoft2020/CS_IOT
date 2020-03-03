@@ -17,7 +17,7 @@ public class Iotclient {
      */
     public static void main(String[] args) {
         Message msg = new Message();
-        //msg.authUser("username", "password");
+        msg.authUser("username", "password");
         JSONArray data = msg.addField("naem213");
         System.out.println(data);
 

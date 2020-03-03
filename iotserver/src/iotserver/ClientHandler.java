@@ -29,6 +29,11 @@ public class ClientHandler extends Thread {
             }
             
             System.out.println(result);
+                 try (FileWriter file = new FileWriter("test.json")) {
+            file.write(result.toJSONString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
             
             dos.writeUTF(received);
         } catch (IOException ex) {

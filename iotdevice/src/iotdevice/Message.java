@@ -101,7 +101,6 @@ public class Message {
             try {
                 JSONArray result = new JSONArray();
 
-                
                 JSONParser jsonParser = new JSONParser();
                 result.add((jsonParser.parse(inputStream.readUTF())));
                 return result;

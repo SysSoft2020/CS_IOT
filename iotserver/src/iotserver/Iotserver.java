@@ -1,21 +1,17 @@
 package iotserver;
-import java.io.*; 
-import java.text.*; 
-import java.util.*; 
-import java.net.*; 
-
+import java.io.*;
+import java.text.*;
+import java.util.*;
+import java.net.*;
 
 public class Iotserver {
 
     public static void main(String[] args) throws IOException {
         // server is listening on port 5056 
         ServerSocket ss = new ServerSocket(5056);
-
-        // running infinite loop for getting 
-        // client request 
+        // running infinite loop for getting client request 
         while (true) {
             Socket s = null;
-
             try {
                 // socket object to receive incoming client requests 
                 s = ss.accept();
@@ -28,12 +24,8 @@ public class Iotserver {
                 Thread t = new ClientHandler(s, dis, dos);
                 // Invoking the start() method 
                 t.start();
-
             } catch (IOException e) {
-          
             }
         }
     }
-
-
 }
