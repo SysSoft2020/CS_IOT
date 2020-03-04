@@ -156,10 +156,10 @@ public class Message {
         return returnData;
     }
     
+    
     JSONArray getAllFields(){
         JSONObject request = new JSONObject();
         request.put("RETURNALLFIELDS", true);
-        
         JSONArray fields =  sendWithJsonArrayReturn(request);
         fields = (JSONArray) fields.get(0);
         return fields;

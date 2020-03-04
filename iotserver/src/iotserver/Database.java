@@ -13,6 +13,16 @@ import org.json.simple.parser.*;
 
 public class Database {
     final boolean DEBUG = true;
+    /**
+     * Function that returns opened database object
+     * 
+     * This function is called before making any call to a 
+     * sqlite3 database.After successful database operation, 
+     * instance that is created should be closed with closeDB()
+     * method.
+     * 
+     * @return database object 
+     */
     private Connection openDB() {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -35,7 +45,11 @@ public class Database {
         } catch (ClassNotFoundException | SQLException ex) {}
         return null;
     }
-
+    /**
+     * Function that closes database object passed to it
+     * 
+     * @param conn Database object 
+     */
     private void closeDB(Connection conn) {
         try {
             conn.close();
@@ -46,7 +60,14 @@ public class Database {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    /**
+     * Function that accesses database in order to verify combination of username and password
+     * 
+     * @param username Username for the user, as string
+     * @param password Password for the user, as string
+     * @return boolean value, true if username and password combination is correct
+     */
     public boolean authUser(String username, String password) {
 
         try {
@@ -65,7 +86,14 @@ public class Database {
         }
         return false;
     }
-
+    /**
+     * Function that accesses database in order to add field to the system
+     * 
+     * @param fieldName Name of the field, as string
+     * @param latitude Geographical latitude, as double number
+     * @param longitude Geographical longitude, as double number
+     * @return JSONObject containing data about entered field 
+     */
     public JSONObject addField(String fieldName, double latitude, double longitude) {
         try {
             Connection db = openDB();
@@ -89,7 +117,12 @@ public class Database {
 
         return null;
     }
-
+    /**
+     * Function that accesses database in order to retreive information about field based on field name
+     * 
+     * @param fieldName Name of the field, as string
+     * @return JSONObject containing data about entered field 
+     */
     public JSONObject getFieldData(String fieldName) {
         try {
             Connection db = openDB();
@@ -113,7 +146,11 @@ public class Database {
         return null;
 
     }
-
+    /**
+     * Function that accesses the database in order to return information about all fields stored in database
+     * 
+     * @return JSONArray ,containing JSONObject with data for each field stored in database 
+     */
     public JSONArray getFieldData() {
         try {
             Connection db = openDB();
