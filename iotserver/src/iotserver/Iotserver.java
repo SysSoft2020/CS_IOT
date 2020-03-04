@@ -7,6 +7,9 @@ import java.net.*;
 public class Iotserver {
 
     public static void main(String[] args) throws IOException {
+        
+
+        
         // server is listening on port 5056 
         ServerSocket ss = new ServerSocket(5056);
         // running infinite loop for getting client request 
@@ -27,5 +30,6 @@ public class Iotserver {
             } catch (IOException e) {
             }
         }
+        
     }
 }

@@ -131,14 +131,34 @@ public class Message {
     }
     
 
-    JSONArray addField(String fieldname) {
+    JSONObject addField(String fieldname, double longitude, double latitude) {
         JSONArray data = new JSONArray();
         JSONObject fieldData = new JSONObject();
         fieldData.put("fieldName", fieldname);
+        fieldData.put("longitude", longitude);
+        fieldData.put("latitude", latitude);
         JSONObject request = new JSONObject();
         request.put("FIELDADD", fieldData);
         data.add(request);
-        return sendWithJsonReturn(data);
+        
+        JSONArray returnData = sendWithJsonReturn(data);
+        JSONArray messages = (JSONArray) returnData.get(0);
+        for (int i = 0; i < messages.size(); i++) {
+            JSONObject message = (JSONObject) messages.get(i);
+            return (JSONObject) message.get("FIELDDATA");
+        }
+        return null;
+    }
+    
+    JSONArray getAllFields(){
+        JSONArray _request = new JSONArray();
+        JSONObject request = new JSONObject();
+        request.put("RETURNALLFIELDS", true);
+        _request.add(request);
+        
+        JSONArray fields =  sendWithJsonReturn(_request);
+        fields = (JSONArray) fields.get(0);
+        return fields;
     }
 
 }

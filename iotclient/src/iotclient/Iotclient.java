@@ -17,10 +17,17 @@ public class Iotclient {
      */
     public static void main(String[] args) {
         Message msg = new Message();
-        msg.authUser("username", "password");
-        JSONArray data = msg.addField("naem213");
-        System.out.println(data);
+        boolean a = msg.authUser("ivica", "alexandria"); //returns boolean true if username matches password
+        JSONObject fieldData = msg.addField("lolooscsosd", 222, -13.21); //adds field to database and returns object with information on new field
+        //System.out.println(fieldData);
+        
+        JSONArray fields = msg.getAllFields();        
+        for (int i = 0; i< fields.size();i++){
+            JSONObject o = (JSONObject) fields.get(i);
+            System.out.println(o);
+        }
+
+        
 
     }
-    
 }

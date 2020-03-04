@@ -2,16 +2,21 @@ package iotserver;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.simple.*;
+import org.json.simple.parser.*;
 
 public class Database {
     final boolean DEBUG = true;
     private Connection openDB() {
         try {
             Class.forName("org.sqlite.JDBC");
-            String dbURL = "jdbc:sqlite:database.db";
+            String dbURL = "jdbc:sqlite:database";
             Connection conn = null;
             try {
                 conn = DriverManager.getConnection(dbURL);
@@ -34,11 +39,102 @@ public class Database {
     private void closeDB(Connection conn) {
         try {
             conn.close();
-            if(this.DEBUG){
+            if (this.DEBUG) {
                 System.out.println("Closed connection to the database");
             }
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public boolean authUser(String username, String password) {
+
+        try {
+            Connection db = openDB();
+            String sql = "SELECT password FROM 'users' WHERE username = '" + username + "' ;";
+            Statement sqlQuery = db.createStatement();
+            ResultSet results = sqlQuery.executeQuery(sql);
+            closeDB(db);
+
+            while (results.next()) {
+                if (results.getString("password").equals(password)) return true;
+            }
+            return false;
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public JSONArray addField(String fieldName, double latitude, double longitude) {
+        try {
+            Connection db = openDB();
+            String sql = "INSERT INTO field ('name','latitude','longitude') VALUES (?,?,?)";
+            PreparedStatement statement = db.prepareStatement(sql);
+            statement.setString(1, fieldName);
+            statement.setDouble(2, latitude);
+            statement.setDouble(3, longitude);
+            statement.executeUpdate();
+            closeDB(db);
+            return getFieldData(fieldName);
+            //return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
+
+    public JSONArray getFieldData(String fieldName) {
+        try {
+            Connection db = openDB();
+            String sql = "SELECT * FROM 'field' WHERE name = '" + fieldName + "' ;";
+            System.out.println(sql);
+            Statement sqlQuery = db.createStatement();
+            ResultSet results = sqlQuery.executeQuery(sql);
+            JSONArray data = new JSONArray();
+            while (results.next()) {
+                JSONObject newFieldData = new JSONObject();
+                newFieldData.put("fieldId", results.getInt("id"));
+                newFieldData.put("name", results.getString("name"));
+                newFieldData.put("latitude", results.getDouble("latitude"));
+                newFieldData.put("longitude", results.getDouble("longitude"));
+                JSONObject response = new JSONObject();
+                response.put("FIELDDATA", newFieldData);
+                data.add(response);
+            }
+            closeDB(db);
+            return data;
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+
+    }
+    
+        public JSONArray getFieldData() {
+        try {
+            Connection db = openDB();
+            String sql = "SELECT * FROM 'field' ;";
+            System.out.println(sql);
+            Statement sqlQuery = db.createStatement();
+            ResultSet results = sqlQuery.executeQuery(sql);
+            JSONArray data = new JSONArray();
+            while (results.next()) {
+                JSONObject newFieldData = new JSONObject();
+                newFieldData.put("fieldId", results.getInt("id"));
+                newFieldData.put("name", results.getString("name"));
+                newFieldData.put("latitude", results.getDouble("latitude"));
+                newFieldData.put("longitude", results.getDouble("longitude"));
+                data.add(newFieldData);
+            }
+            closeDB(db);
+            return data;
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+
+    }
+
 }
