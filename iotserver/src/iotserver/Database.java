@@ -54,11 +54,11 @@ public class Database {
             String sql = "SELECT password FROM 'users' WHERE username = '" + username + "' ;";
             Statement sqlQuery = db.createStatement();
             ResultSet results = sqlQuery.executeQuery(sql);
-            closeDB(db);
 
             while (results.next()) {
                 if (results.getString("password").equals(password)) return true;
             }
+            closeDB(db);
             return false;
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
@@ -66,7 +66,7 @@ public class Database {
         return false;
     }
 
-    public JSONArray addField(String fieldName, double latitude, double longitude) {
+    public JSONObject addField(String fieldName, double latitude, double longitude) {
         try {
             Connection db = openDB();
             String sql = "INSERT INTO field ('name','latitude','longitude') VALUES (?,?,?)";
@@ -79,40 +79,42 @@ public class Database {
             return getFieldData(fieldName);
             //return null;
         } catch (SQLException ex) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+
+            if (ex.getErrorCode() == 19) {
+                JSONObject err = new JSONObject();
+                err.put("ERROR", "Field already exists in a database");
+                return err;
+            }
         }
 
         return null;
     }
 
-    public JSONArray getFieldData(String fieldName) {
+    public JSONObject getFieldData(String fieldName) {
         try {
             Connection db = openDB();
             String sql = "SELECT * FROM 'field' WHERE name = '" + fieldName + "' ;";
             System.out.println(sql);
             Statement sqlQuery = db.createStatement();
             ResultSet results = sqlQuery.executeQuery(sql);
-            JSONArray data = new JSONArray();
-            while (results.next()) {
-                JSONObject newFieldData = new JSONObject();
-                newFieldData.put("fieldId", results.getInt("id"));
-                newFieldData.put("name", results.getString("name"));
-                newFieldData.put("latitude", results.getDouble("latitude"));
-                newFieldData.put("longitude", results.getDouble("longitude"));
-                JSONObject response = new JSONObject();
-                response.put("FIELDDATA", newFieldData);
-                data.add(response);
-            }
+            JSONObject newFieldData = new JSONObject();
+            newFieldData.put("fieldId", results.getInt("id"));
+            newFieldData.put("name", results.getString("name"));
+            newFieldData.put("latitude", results.getDouble("latitude"));
+            newFieldData.put("longitude", results.getDouble("longitude"));
+  
+
             closeDB(db);
-            return data;
+            return newFieldData;
+
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
 
     }
-    
-        public JSONArray getFieldData() {
+
+    public JSONArray getFieldData() {
         try {
             Connection db = openDB();
             String sql = "SELECT * FROM 'field' ;";

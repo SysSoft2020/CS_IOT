@@ -61,12 +61,8 @@ public class Message {
         System.out.println(data);
     }
 
-    private boolean sendWithBooleanReturn(JSONArray data) {
+    private boolean sendWithBooleanReturn(JSONObject data) {
     
-        if (this.DEBUG) {
-            sendToTerminal(data);
-            return false;
-        }
         boolean result = false;
      
         setupConnectionToServer();
@@ -85,12 +81,7 @@ public class Message {
         return result;
     }
 
-    private JSONArray sendWithJsonReturn(JSONArray data) {
-
-        if (this.DEBUG) {
-            sendToTerminal(data);
-            return new JSONArray();
-        }
+    private JSONArray sendWithJsonArrayReturn(JSONObject data) {
         System.out.println("Sending to server");
         setupConnectionToServer();
         try {
@@ -118,45 +109,58 @@ public class Message {
         closeConnectionToServer();
         return null;
     }
+    
+        private JSONObject sendWithJsonObjectReturn(JSONObject data) {
+        setupConnectionToServer();
+        try {
+
+            try {
+                outputStream.writeUTF(data.toString());
+            } catch (IOException ex) {
+                Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                JSONParser jsonParser = new JSONParser();                
+                return (JSONObject) jsonParser.parse(inputStream.readUTF());
+
+            } catch (ParseException ex) {
+                Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } catch (IOException ex) {
+            Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        closeConnectionToServer();
+        return null;
+    }
 
     public boolean authUser(String username, String password) {
-        JSONArray data = new JSONArray();
         JSONObject userData = new JSONObject();
         userData.put("username", username);
         userData.put("password", password);
         JSONObject request = new JSONObject();
         request.put("AUTHUSER", userData);
-        data.add(request);
-        return sendWithBooleanReturn(data);
+        return sendWithBooleanReturn(request);
     }
     
 
     JSONObject addField(String fieldname, double longitude, double latitude) {
-        JSONArray data = new JSONArray();
         JSONObject fieldData = new JSONObject();
         fieldData.put("fieldName", fieldname);
         fieldData.put("longitude", longitude);
         fieldData.put("latitude", latitude);
         JSONObject request = new JSONObject();
         request.put("FIELDADD", fieldData);
-        data.add(request);
         
-        JSONArray returnData = sendWithJsonReturn(data);
-        JSONArray messages = (JSONArray) returnData.get(0);
-        for (int i = 0; i < messages.size(); i++) {
-            JSONObject message = (JSONObject) messages.get(i);
-            return (JSONObject) message.get("FIELDDATA");
-        }
-        return null;
+        JSONObject returnData = sendWithJsonObjectReturn(request);
+        return returnData;
     }
     
     JSONArray getAllFields(){
-        JSONArray _request = new JSONArray();
         JSONObject request = new JSONObject();
         request.put("RETURNALLFIELDS", true);
-        _request.add(request);
         
-        JSONArray fields =  sendWithJsonReturn(_request);
+        JSONArray fields =  sendWithJsonArrayReturn(request);
         fields = (JSONArray) fields.get(0);
         return fields;
     }

@@ -16,17 +16,17 @@ public class ClientHandler extends Thread {
         this.dis = dis;
         this.dos = dos;
     }
+    
     @Override
     public void run() {
         try {
             String received = dis.readUTF();
             JSONParser jsonParser = new JSONParser();
             Object obj = jsonParser.parse(received);
-            JSONArray messages = (JSONArray)obj;
-            
+            JSONObject message = (JSONObject)obj;
+                                System.out.println(message);
+
             /******PROCESSING LOGIC GOES HERE******/
-            for(int i = 0; i<messages.size();i++){
-                JSONObject message = (JSONObject)messages.get(i);
                 if (message.containsKey("AUTHUSER")){
                     JSONObject userDetails = (JSONObject) message.get("AUTHUSER");
                     String userName = (String) userDetails.get("username");
@@ -43,7 +43,7 @@ public class ClientHandler extends Thread {
                     double latitude = (double) fieldDetails.get("latitude");
                     double longitude = (double) fieldDetails.get("longitude");
                     Database db = new Database();
-                    JSONArray data = db.addField(fieldName, latitude, longitude);
+                    JSONObject data = db.addField(fieldName, latitude, longitude);
                     dos.writeUTF(data.toString());
                 }
                 
@@ -52,7 +52,7 @@ public class ClientHandler extends Thread {
                     JSONArray data = db.getFieldData();
                     dos.writeUTF(data.toString());
                 }
-            }
+            
             /******PROCESSING LOGIC ENDS*******/
             
 
