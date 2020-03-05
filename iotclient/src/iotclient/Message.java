@@ -143,10 +143,9 @@ public class Message {
         return sendWithBooleanReturn(request);
     }
     
-
-    JSONObject addField(String fieldname, double longitude, double latitude) {
+    JSONObject addField(String fieldName, double longitude, double latitude) {
         JSONObject fieldData = new JSONObject();
-        fieldData.put("fieldName", fieldname);
+        fieldData.put("fieldName", fieldName);
         fieldData.put("longitude", longitude);
         fieldData.put("latitude", latitude);
         JSONObject request = new JSONObject();
@@ -154,6 +153,20 @@ public class Message {
         
         JSONObject returnData = sendWithJsonObjectReturn(request);
         return returnData;
+    }
+   
+    public boolean addWeatherStationData(String weatherStation, double temperature, double barometricPressure, double windSpeed, double relativeHumidity, int airQualityIndex) {
+        JSONObject fieldData = new JSONObject();
+        fieldData.put("weatherStation",weatherStation);
+        fieldData.put("temperature", temperature);
+        fieldData.put("barometricPressure", barometricPressure);
+        fieldData.put("windSpeed",windSpeed);
+        fieldData.put("relativeHumidity",relativeHumidity);
+        fieldData.put("airQualityIndex",airQualityIndex);        
+        JSONObject request = new JSONObject();
+        request.put("WEATHERSTATIONDATAADD", fieldData);
+
+        return sendWithBooleanReturn(request);
     }
     
     
