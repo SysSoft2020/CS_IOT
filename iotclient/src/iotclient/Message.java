@@ -164,7 +164,7 @@ public class Message {
         fieldData.put("relativeHumidity",relativeHumidity);
         fieldData.put("airQualityIndex",airQualityIndex);        
         JSONObject request = new JSONObject();
-        request.put("SESNSORDATAADD", fieldData);
+        request.put("WEATHERSTATIONDATAADD", fieldData);
 
         return sendWithBooleanReturn(request);
     }

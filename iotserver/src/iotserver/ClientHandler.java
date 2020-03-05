@@ -46,8 +46,8 @@ public class ClientHandler extends Thread {
                     dos.writeUTF(data.toString());
                 }
                 
-                if (message.containsKey("SENSORDATAADD")){
-                    JSONObject fieldDetails = (JSONObject) message.get("SENSORDATAADD");
+                if (message.containsKey("WEATHERSTATIONDATAADD")){
+                    JSONObject fieldDetails = (JSONObject) message.get("WEATHERSTATIONDATAADD");
                     System.out.println(fieldDetails);
                     String weatherStation = (String) fieldDetails.get("weatherStation");
                     double temperature = (double) fieldDetails.get("temperature");
