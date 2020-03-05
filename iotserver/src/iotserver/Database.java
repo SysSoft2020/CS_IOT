@@ -91,15 +91,14 @@ public class Database {
      * @return JSONObject containing data about entered field 
      */
     public JSONObject addField(String fieldName, double latitude, double longitude) {
+        Connection db = openDB();
         try {
-            Connection db = openDB();
             String sql = "INSERT INTO field ('name','latitude','longitude') VALUES (?,?,?)";
             PreparedStatement statement = db.prepareStatement(sql);
             statement.setString(1, fieldName);
             statement.setDouble(2, latitude);
             statement.setDouble(3, longitude);
             statement.execute();
-            closeDB(db);
             //return null;
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
@@ -109,7 +108,29 @@ public class Database {
                 return err;
             }
         }
-        return getFieldData(fieldName);
+        JSONObject obj = getFieldData(db,fieldName);
+        closeDB(db);
+        return obj;
+    }
+    
+    public boolean addWeatherStationData(long weatherStation , double temperature, double barometricPressure, double windSpeed, double relativeHumidity, long airQualityIndex){
+        
+        Connection db = openDB();
+        String sql = "INSERT INTO weatherStationData ('weatherStation','temperature','barometricPressure','windSpeed','relativeHumidity','airQualityIndex') VALUES (?,?,?,?,?,?)";
+        try {
+            PreparedStatement statement = db.prepareStatement(sql);
+            statement.setLong(1, weatherStation);
+            statement.setDouble(2,temperature);
+            statement.setDouble(3,barometricPressure);
+            statement.setDouble(4,windSpeed);
+            statement.setDouble(5, relativeHumidity);
+            statement.setLong(6,airQualityIndex);
+            
+            return(statement.execute());
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
     }
     /**
      * Function that accesses database in order to retreive information about field based on field name
@@ -130,6 +151,25 @@ public class Database {
             newFieldData.put("latitude", results.getDouble("latitude"));
             newFieldData.put("longitude", results.getDouble("longitude"));
             closeDB(db);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return newFieldData;
+
+    }
+    
+    public JSONObject getFieldData(Connection db,String fieldName) {
+        JSONObject newFieldData = new JSONObject();
+        try {
+            String sql = "SELECT * FROM 'field' WHERE name = '" + fieldName + "' ;";
+            System.out.println(sql);
+            Statement sqlQuery = db.createStatement();
+            ResultSet results = sqlQuery.executeQuery(sql);
+            newFieldData.put("fieldId", results.getInt("id"));
+            newFieldData.put("name", results.getString("name"));
+            newFieldData.put("latitude", results.getDouble("latitude"));
+            newFieldData.put("longitude", results.getDouble("longitude"));
 
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
@@ -164,7 +204,8 @@ public class Database {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-
     }
+    
+    
 
 }

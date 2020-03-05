@@ -46,6 +46,20 @@ public class ClientHandler extends Thread {
                     dos.writeUTF(data.toString());
                 }
                 
+                if (message.containsKey("WEATHERSTATIONDATAADD")){
+                    JSONObject fieldDetails = (JSONObject) message.get("WEATHERSTATIONDATAADD");
+                    System.out.println(fieldDetails);
+                    long  weatherStation =  (long) fieldDetails.get("weatherStation");
+                    double temperature = (double) fieldDetails.get("temperature");
+                    double barometricPressure = (double) fieldDetails.get("barometricPressure");
+                    double windSpeed = (double) fieldDetails.get("windSpeed");
+                    double relativeHumidity = (double) fieldDetails.get("relativeHumidity");
+                    long airQualityIndex = (long) fieldDetails.get("airQualityIndex");
+                    Database db = new Database();
+                    boolean x = db.addWeatherStationData(weatherStation, temperature, barometricPressure,windSpeed,relativeHumidity,airQualityIndex);
+                    dos.writeBoolean(x);
+                }
+                
                 if (message.containsKey("RETURNALLFIELDS")){
                     Database db = new Database();
                     JSONArray data = db.getFieldData();
