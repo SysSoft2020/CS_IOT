@@ -12,7 +12,6 @@ import org.json.simple.*;
 import org.json.simple.parser.*;
 
 public class Database {
-    final boolean DEBUG = true;
     /**
      * Function that returns opened database object
      * 
@@ -34,7 +33,7 @@ public class Database {
             } catch (SQLException ex) {
                 Logger.getLogger(Iotserver.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if (conn != null && this.DEBUG) {
+            if (conn != null) {
                 System.out.println("Connected to the database");
                 DatabaseMetaData dm = (DatabaseMetaData) conn.getMetaData();
                 System.out.println("Driver name: " + dm.getDriverName());
@@ -53,9 +52,6 @@ public class Database {
     private void closeDB(Connection conn) {
         try {
             conn.close();
-            if (this.DEBUG) {
-                System.out.println("Closed connection to the database");
-            }
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }

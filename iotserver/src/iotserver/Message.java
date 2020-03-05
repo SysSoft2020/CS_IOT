@@ -13,7 +13,6 @@ public class Message {
     /* Parameters that are going to get passed to message, so message
     can send itself just by being provided with socket parameters
     */
-    final boolean DEBUG = true;
     Socket socket;
     DataInputStream inputStream;
     DataOutputStream outputStream;
@@ -61,11 +60,6 @@ public class Message {
     }
 
     private boolean sendWithBooleanReturn(JSONArray data) {
-    
-        if (this.DEBUG) {
-            sendToTerminal(data);
-            return false;
-        }
         boolean result = false;
      
         setupConnectionToServer();
@@ -85,11 +79,7 @@ public class Message {
     }
 
     private JSONArray sendWithJsonReturn(JSONArray data) {
-
-        if (this.DEBUG) {
-            sendToTerminal(data);
-            return new JSONArray();
-        }
+        
         setupConnectionToServer();
         try {
 
