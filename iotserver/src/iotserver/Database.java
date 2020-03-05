@@ -111,7 +111,28 @@ public class Database {
         JSONObject obj = getFieldData(db,fieldName);
         closeDB(db);
         return obj;
+    }
+    
+    public boolean addWeatherStationData(String weatherStation , double temperature, double barometricPressure, double windSpeed, double relativeHumidity, int airQualityIndex){
+        
+        Connection db = openDB();
+        String sql = "INSERT INTO weatherStationData ('weatherStation','temperature','barometricPressure','windSpeed','relativeHumidity','airQualityIndex') VALUES (?,?,?,?,?,?)";
+        try {
+            PreparedStatement statement = db.prepareStatement(sql);
+            statement.setString(1, weatherStation);
+            statement.setDouble(2,temperature);
+            statement.setDouble(3,barometricPressure);
+            statement.setDouble(4,windSpeed);
+            statement.setDouble(5, relativeHumidity);
+            statement.setInt(6,airQualityIndex);
+            
+            return(statement.execute());
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
+        
+        return false;
     }
     /**
      * Function that accesses database in order to retreive information about field based on field name
