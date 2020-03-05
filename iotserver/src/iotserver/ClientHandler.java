@@ -49,15 +49,15 @@ public class ClientHandler extends Thread {
                 if (message.containsKey("WEATHERSTATIONDATAADD")){
                     JSONObject fieldDetails = (JSONObject) message.get("WEATHERSTATIONDATAADD");
                     System.out.println(fieldDetails);
-                    String weatherStation = (String) fieldDetails.get("weatherStation");
+                    long  weatherStation =  (long) fieldDetails.get("weatherStation");
                     double temperature = (double) fieldDetails.get("temperature");
                     double barometricPressure = (double) fieldDetails.get("barometricPressure");
                     double windSpeed = (double) fieldDetails.get("windSpeed");
                     double relativeHumidity = (double) fieldDetails.get("relativeHumidity");
-                    int airQualityIndex = (int) fieldDetails.get("airQualityIndex");
+                    long airQualityIndex = (long) fieldDetails.get("airQualityIndex");
                     Database db = new Database();
-                    JSONObject data = db.addWeatherStationData(weatherStation, temperature, barometricPressure,windSpeed,relativeHumidity,airQualityIndex);
-                    dos.writeUTF(data.toString());
+                    boolean x = db.addWeatherStationData(weatherStation, temperature, barometricPressure,windSpeed,relativeHumidity,airQualityIndex);
+                    dos.writeBoolean(x);
                 }
                 
                 if (message.containsKey("RETURNALLFIELDS")){

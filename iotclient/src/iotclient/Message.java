@@ -155,7 +155,7 @@ public class Message {
         return returnData;
     }
    
-    public boolean addWeatherStationData(String weatherStation, double temperature, double barometricPressure, double windSpeed, double relativeHumidity, int airQualityIndex) {
+    public boolean addWeatherStationData(long weatherStation, double temperature, double barometricPressure, double windSpeed, double relativeHumidity, long airQualityIndex) {
         JSONObject fieldData = new JSONObject();
         fieldData.put("weatherStation",weatherStation);
         fieldData.put("temperature", temperature);

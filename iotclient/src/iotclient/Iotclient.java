@@ -17,18 +17,7 @@ public class Iotclient {
      */
     public static void main(String[] args) {
         Message msg = new Message();
-        //boolean a = msg.authUser("ivica", "alexandria"); //returns boolean true if username matches password
-        //System.out.println(a);
-        JSONObject fieldData = msg.addField("fieldNam", -22, -13.21); //adds field to database and returns object with information on new field
-        System.out.println(fieldData);
-        
-        JSONArray fields = msg.getAllFields();        
-        for (int i = 0; i< fields.size();i++){
-            JSONObject o = (JSONObject) fields.get(i);
-            System.out.println(o);
-        }
-       
-        
+        System.out.println(msg.addWeatherStationData(0, 2, 33, 0, 0, (int)0));
 
     }
 }
