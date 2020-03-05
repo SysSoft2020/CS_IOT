@@ -13,6 +13,7 @@ public class Message {
     /* Parameters that are going to get passed to message, so message
     can send itself just by being provided with socket parameters
     */
+    final boolean DEBUG = false;
     Socket socket;
     DataInputStream inputStream;
     DataOutputStream outputStream;
@@ -41,6 +42,7 @@ public class Message {
         } catch (IOException ex) {
             Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
         }
+        System.out.println("Connection to server sucesfull");
     }
     
     private void closeConnectionToServer(){
@@ -59,7 +61,8 @@ public class Message {
         System.out.println(data);
     }
 
-    private boolean sendWithBooleanReturn(JSONArray data) {
+    private boolean sendWithBooleanReturn(JSONObject data) {
+    
         boolean result = false;
      
         setupConnectionToServer();
@@ -78,8 +81,8 @@ public class Message {
         return result;
     }
 
-    private JSONArray sendWithJsonReturn(JSONArray data) {
-        
+    private JSONArray sendWithJsonArrayReturn(JSONObject data) {
+        System.out.println("Sending to server");
         setupConnectionToServer();
         try {
 
@@ -106,27 +109,60 @@ public class Message {
         closeConnectionToServer();
         return null;
     }
+    
+        private JSONObject sendWithJsonObjectReturn(JSONObject data) {
+        setupConnectionToServer();
+        try {
+
+            try {
+                outputStream.writeUTF(data.toString());
+            } catch (IOException ex) {
+                Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                JSONParser jsonParser = new JSONParser();                
+                return (JSONObject) jsonParser.parse(inputStream.readUTF());
+
+            } catch (ParseException ex) {
+                Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } catch (IOException ex) {
+            Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        closeConnectionToServer();
+        return null;
+    }
 
     public boolean authUser(String username, String password) {
-        JSONArray data = new JSONArray();
         JSONObject userData = new JSONObject();
         userData.put("username", username);
         userData.put("password", password);
         JSONObject request = new JSONObject();
         request.put("AUTHUSER", userData);
-        data.add(request);
-        return sendWithBooleanReturn(data);
+        return sendWithBooleanReturn(request);
     }
     
 
-    JSONArray addField(String fieldname) {
-        JSONArray data = new JSONArray();
+    JSONObject addField(String fieldname, double longitude, double latitude) {
         JSONObject fieldData = new JSONObject();
         fieldData.put("fieldName", fieldname);
+        fieldData.put("longitude", longitude);
+        fieldData.put("latitude", latitude);
         JSONObject request = new JSONObject();
         request.put("FIELDADD", fieldData);
-        data.add(request);
-        return sendWithJsonReturn(data);
+        
+        JSONObject returnData = sendWithJsonObjectReturn(request);
+        return returnData;
+    }
+    
+    
+    JSONArray getAllFields(){
+        JSONObject request = new JSONObject();
+        request.put("RETURNALLFIELDS", true);
+        JSONArray fields =  sendWithJsonArrayReturn(request);
+        fields = (JSONArray) fields.get(0);
+        return fields;
     }
 
 }

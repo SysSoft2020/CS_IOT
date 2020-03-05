@@ -24,7 +24,6 @@ public class ClientHandler extends Thread {
             JSONParser jsonParser = new JSONParser();
             Object obj = jsonParser.parse(received);
             JSONObject message = (JSONObject)obj;
-                                System.out.println(message);
 
             /******PROCESSING LOGIC GOES HERE******/
                 if (message.containsKey("AUTHUSER")){

@@ -17,9 +17,9 @@ public class Iotclient {
      */
     public static void main(String[] args) {
         Message msg = new Message();
-        boolean a = msg.authUser("ivica", "alexandria"); //returns boolean true if username matches password
-        System.out.println(a);
-        JSONObject fieldData = msg.addField("sssddlolodddddoscsosd", 222, -13.21); //adds field to database and returns object with information on new field
+        //boolean a = msg.authUser("ivica", "alexandria"); //returns boolean true if username matches password
+        //System.out.println(a);
+        JSONObject fieldData = msg.addField("fieldName32", -22, -13.21); //adds field to database and returns object with information on new field
         System.out.println(fieldData);
         
         //JSONArray fields = msg.getAllFields();        

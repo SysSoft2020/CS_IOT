@@ -98,20 +98,18 @@ public class Database {
             statement.setString(1, fieldName);
             statement.setDouble(2, latitude);
             statement.setDouble(3, longitude);
-            statement.executeUpdate();
+            statement.execute();
             closeDB(db);
-            return getFieldData(fieldName);
             //return null;
         } catch (SQLException ex) {
-
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
             if (ex.getErrorCode() == 19) {
                 JSONObject err = new JSONObject();
                 err.put("ERROR", "Field already exists in a database");
                 return err;
             }
         }
-
-        return null;
+        return getFieldData(fieldName);
     }
     /**
      * Function that accesses database in order to retreive information about field based on field name
@@ -120,26 +118,23 @@ public class Database {
      * @return JSONObject containing data about entered field 
      */
     public JSONObject getFieldData(String fieldName) {
+        JSONObject newFieldData = new JSONObject();
         try {
             Connection db = openDB();
             String sql = "SELECT * FROM 'field' WHERE name = '" + fieldName + "' ;";
             System.out.println(sql);
             Statement sqlQuery = db.createStatement();
             ResultSet results = sqlQuery.executeQuery(sql);
-            JSONObject newFieldData = new JSONObject();
             newFieldData.put("fieldId", results.getInt("id"));
             newFieldData.put("name", results.getString("name"));
             newFieldData.put("latitude", results.getDouble("latitude"));
             newFieldData.put("longitude", results.getDouble("longitude"));
-  
-
             closeDB(db);
-            return newFieldData;
 
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return newFieldData;
 
     }
     /**
