@@ -46,6 +46,18 @@ public class ClientHandler extends Thread {
                     dos.writeUTF(data.toString());
                 }
                 
+                if (message.containsKey("WEATHERSTATIONADD")){
+                    JSONObject fieldDetails = (JSONObject) message.get("WEATHERSTATIONADD");
+                    System.out.println(fieldDetails);
+                    String fieldName = (String) fieldDetails.get("fieldName");
+                    double latitude = (double) fieldDetails.get("latitude");
+                    double longitude = (double) fieldDetails.get("longitude");
+                    String serialNumber = (String) fieldDetails.get("serialNumber");
+                    Database db = new Database();
+                    JSONObject data = db.addWeatherStation(fieldName, latitude, longitude, serialNumber);
+                    dos.writeUTF(data.toString());
+                }
+                
                 if (message.containsKey("RETURNALLFIELDS")){
                     Database db = new Database();
                     JSONArray data = db.getFieldData();

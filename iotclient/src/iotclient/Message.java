@@ -156,6 +156,18 @@ public class Message {
         return returnData;
     }
     
+    JSONObject addSensor(String fieldname, double longitude, double latitude, String serialNumber) {
+        JSONObject fieldData = new JSONObject();
+        fieldData.put("sensorName", fieldname);
+        fieldData.put("longitude", longitude);
+        fieldData.put("latitude", latitude);
+        fieldData.put("serialNumber", serialNumber);
+        JSONObject request = new JSONObject();
+        request.put("ADDWEATHERSTATION", fieldData);
+        
+        JSONObject returnData = sendWithJsonObjectReturn(request);
+        return returnData;
+    }
     
     JSONArray getAllFields(){
         JSONObject request = new JSONObject();
