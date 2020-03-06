@@ -68,7 +68,7 @@ public class ClientHandler extends Thread {
             
             /******PROCESSING LOGIC ENDS*******/
             
-
+            s.close();
         } catch (IOException | ParseException ex) {
             Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
         }

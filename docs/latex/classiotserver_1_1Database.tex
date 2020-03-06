@@ -1,0 +1,151 @@
+\hypertarget{classiotserver_1_1Database}{}\section{iotserver.\+Database Class Reference}
+\label{classiotserver_1_1Database}\index{iotserver.\+Database@{iotserver.\+Database}}
+
+
+Collaboration diagram for iotserver.\+Database\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classiotserver_1_1Database__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+boolean \hyperlink{classiotserver_1_1Database_a2a4ab1640565d077045f9867c59a2573}{auth\+User} (String username, String password)
+\item 
+J\+S\+O\+N\+Object \hyperlink{classiotserver_1_1Database_ac0c9d5c5ea706160d836578c8019d1a7}{add\+Field} (String field\+Name, double latitude, double longitude)
+\item 
+boolean \hyperlink{classiotserver_1_1Database_ae7dfbdcecabac722a8f3ef63a73559b5}{add\+Weather\+Station\+Data} (long weather\+Station\+Id, double temperature, double barometric\+Pressure, double wind\+Speed, double relative\+Humidity, long air\+Quality\+Index)
+\item 
+J\+S\+O\+N\+Object \hyperlink{classiotserver_1_1Database_a2c12fba48ac94748e7ce8fb412b19c1e}{get\+Field\+Data} (String field\+Name)
+\item 
+J\+S\+O\+N\+Object \hyperlink{classiotserver_1_1Database_ac968e2f70df507390dcd535660801c5e}{get\+Field\+Data} (Connection db, String field\+Name)
+\item 
+J\+S\+O\+N\+Array \hyperlink{classiotserver_1_1Database_ab92010b913a502847e7a062d2aa9ad72}{get\+Field\+Data} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classiotserver_1_1Database_ac0c9d5c5ea706160d836578c8019d1a7}\label{classiotserver_1_1Database_ac0c9d5c5ea706160d836578c8019d1a7}} 
+\index{iotserver\+::\+Database@{iotserver\+::\+Database}!add\+Field@{add\+Field}}
+\index{add\+Field@{add\+Field}!iotserver\+::\+Database@{iotserver\+::\+Database}}
+\subsubsection{\texorpdfstring{add\+Field()}{addField()}}
+{\footnotesize\ttfamily J\+S\+O\+N\+Object iotserver.\+Database.\+add\+Field (\begin{DoxyParamCaption}\item[{String}]{field\+Name,  }\item[{double}]{latitude,  }\item[{double}]{longitude }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Function that accesses database in order to add field to the system.
+
+
+\begin{DoxyParams}{Parameters}
+{\em field\+Name} & Name of the field, as string \\
+\hline
+{\em latitude} & Geographical latitude, as double number \\
+\hline
+{\em longitude} & Geographical longitude, as double number \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+J\+S\+O\+N\+Object containing data about entered field 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classiotserver_1_1Database_ae7dfbdcecabac722a8f3ef63a73559b5}\label{classiotserver_1_1Database_ae7dfbdcecabac722a8f3ef63a73559b5}} 
+\index{iotserver\+::\+Database@{iotserver\+::\+Database}!add\+Weather\+Station\+Data@{add\+Weather\+Station\+Data}}
+\index{add\+Weather\+Station\+Data@{add\+Weather\+Station\+Data}!iotserver\+::\+Database@{iotserver\+::\+Database}}
+\subsubsection{\texorpdfstring{add\+Weather\+Station\+Data()}{addWeatherStationData()}}
+{\footnotesize\ttfamily boolean iotserver.\+Database.\+add\+Weather\+Station\+Data (\begin{DoxyParamCaption}\item[{long}]{weather\+Station\+Id,  }\item[{double}]{temperature,  }\item[{double}]{barometric\+Pressure,  }\item[{double}]{wind\+Speed,  }\item[{double}]{relative\+Humidity,  }\item[{long}]{air\+Quality\+Index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Function that enters weather station data to a weather\+Station\+Data table.
+
+Data entered to a table depends on the arguments provided to this method. Function returns true if data is inserted successfully. First parameter, weather\+Station\+Id must be a valid ID number of previously present weather station in weather\+Station table, otherwise insert will fail (F\+O\+R\+E\+I\+GN K\+EY C\+O\+N\+S\+T\+R\+A\+I\+NT).
+
+
+\begin{DoxyParams}{Parameters}
+{\em weather\+Station\+Id} & ID number of previously existing weather station \\
+\hline
+{\em temperature} & \\
+\hline
+{\em barometric\+Pressure} & \\
+\hline
+{\em wind\+Speed} & \\
+\hline
+{\em relative\+Humidity} & \\
+\hline
+{\em air\+Quality\+Index} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Boolean value, true if data is inserted successfully, otherwise false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classiotserver_1_1Database_a2a4ab1640565d077045f9867c59a2573}\label{classiotserver_1_1Database_a2a4ab1640565d077045f9867c59a2573}} 
+\index{iotserver\+::\+Database@{iotserver\+::\+Database}!auth\+User@{auth\+User}}
+\index{auth\+User@{auth\+User}!iotserver\+::\+Database@{iotserver\+::\+Database}}
+\subsubsection{\texorpdfstring{auth\+User()}{authUser()}}
+{\footnotesize\ttfamily boolean iotserver.\+Database.\+auth\+User (\begin{DoxyParamCaption}\item[{String}]{username,  }\item[{String}]{password }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Function that accesses database in order to verify combination of username and password.
+
+
+\begin{DoxyParams}{Parameters}
+{\em username} & Username for the user, as string \\
+\hline
+{\em password} & Password for the user, as string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean value, true if username and password combination is correct 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classiotserver_1_1Database_a2c12fba48ac94748e7ce8fb412b19c1e}\label{classiotserver_1_1Database_a2c12fba48ac94748e7ce8fb412b19c1e}} 
+\index{iotserver\+::\+Database@{iotserver\+::\+Database}!get\+Field\+Data@{get\+Field\+Data}}
+\index{get\+Field\+Data@{get\+Field\+Data}!iotserver\+::\+Database@{iotserver\+::\+Database}}
+\subsubsection{\texorpdfstring{get\+Field\+Data()}{getFieldData()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily J\+S\+O\+N\+Object iotserver.\+Database.\+get\+Field\+Data (\begin{DoxyParamCaption}\item[{String}]{field\+Name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Function that accesses database in order to retrieve information about field based on field name.
+
+Use this function when you want to return only one row from any given table in the database, i.\+e. S\+E\+L\+E\+CT $\ast$ F\+R\+OM field W\+H\+E\+RE id = 1;.
+
+
+\begin{DoxyParams}{Parameters}
+{\em field\+Name} & Name of the field, as string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+J\+S\+O\+N\+Object containing data about specified field 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classiotserver_1_1Database_ac968e2f70df507390dcd535660801c5e}\label{classiotserver_1_1Database_ac968e2f70df507390dcd535660801c5e}} 
+\index{iotserver\+::\+Database@{iotserver\+::\+Database}!get\+Field\+Data@{get\+Field\+Data}}
+\index{get\+Field\+Data@{get\+Field\+Data}!iotserver\+::\+Database@{iotserver\+::\+Database}}
+\subsubsection{\texorpdfstring{get\+Field\+Data()}{getFieldData()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily J\+S\+O\+N\+Object iotserver.\+Database.\+get\+Field\+Data (\begin{DoxyParamCaption}\item[{Connection}]{db,  }\item[{String}]{field\+Name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Function that accesses database in order to retrieve information about field based on field name.
+
+Use this function if you want to return data after you insert it into a database and when you want to return only one row from any given table in the database, i.\+e. S\+E\+L\+E\+CT $\ast$ F\+R\+OM field W\+H\+E\+RE id = 1;.
+
+
+\begin{DoxyParams}{Parameters}
+{\em db} & \hyperlink{classiotserver_1_1Database}{Database} object, must be previously open \\
+\hline
+{\em field\+Name} & Name of the field, as string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+J\+S\+O\+N\+Object containing data about specified field 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classiotserver_1_1Database_ab92010b913a502847e7a062d2aa9ad72}\label{classiotserver_1_1Database_ab92010b913a502847e7a062d2aa9ad72}} 
+\index{iotserver\+::\+Database@{iotserver\+::\+Database}!get\+Field\+Data@{get\+Field\+Data}}
+\index{get\+Field\+Data@{get\+Field\+Data}!iotserver\+::\+Database@{iotserver\+::\+Database}}
+\subsubsection{\texorpdfstring{get\+Field\+Data()}{getFieldData()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily J\+S\+O\+N\+Array iotserver.\+Database.\+get\+Field\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Function that accesses the database in order to return information about all fields stored in database.
+
+Use this function when you want to obtain more that one row from the table, i.\+e. on S\+E\+L\+E\+CT $\ast$ F\+R\+OM field;.
+
+\begin{DoxyReturn}{Returns}
+J\+S\+O\+N\+Array ,containing J\+S\+O\+N\+Object with data for each field stored in database 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/ivica/\+Coding/\+Java/\+C\+S\+\_\+\+I\+O\+T/iotserver/src/iotserver/Database.\+java\end{DoxyCompactItemize}

@@ -1,0 +1,115 @@
+\hypertarget{classiotclient_1_1Message}{}\section{iotclient.\+Message Class Reference}
+\label{classiotclient_1_1Message}\index{iotclient.\+Message@{iotclient.\+Message}}
+
+
+Collaboration diagram for iotclient.\+Message\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classiotclient_1_1Message__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+boolean \hyperlink{classiotclient_1_1Message_a4e2ba3e3d5156b8014443aab39e240fc}{auth\+User} (String username, String password)
+\item 
+J\+S\+O\+N\+Object \hyperlink{classiotclient_1_1Message_aabe363a067aa335d1b00f7587632da52}{add\+Field} (String field\+Name, double longitude, double latitude)
+\item 
+J\+S\+O\+N\+Array \hyperlink{classiotclient_1_1Message_a22814eaf8f1a8a3bb07b7823c52c83e8}{get\+All\+Fields} ()
+\item 
+boolean \hyperlink{classiotclient_1_1Message_aab1d4eea6ba3c4172d599aafc5898dfc}{add\+Weather\+Station\+Data} (long weather\+Station\+Id, double temperature, double barometric\+Pressure, double wind\+Speed, double relative\+Humidity, long air\+Quality\+Index)
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classiotclient_1_1Message_aabe363a067aa335d1b00f7587632da52}\label{classiotclient_1_1Message_aabe363a067aa335d1b00f7587632da52}} 
+\index{iotclient\+::\+Message@{iotclient\+::\+Message}!add\+Field@{add\+Field}}
+\index{add\+Field@{add\+Field}!iotclient\+::\+Message@{iotclient\+::\+Message}}
+\subsubsection{\texorpdfstring{add\+Field()}{addField()}}
+{\footnotesize\ttfamily J\+S\+O\+N\+Object iotclient.\+Message.\+add\+Field (\begin{DoxyParamCaption}\item[{String}]{field\+Name,  }\item[{double}]{longitude,  }\item[{double}]{latitude }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Adds a field to a database table.
+
+This method creates J\+S\+O\+N\+Object with key \char`\"{}\+F\+I\+E\+L\+D\+A\+D\+D\char`\"{} having a value of another J\+S\+O\+N\+Object which contains details for a field which are obtained from the parameters of this method. Root object is then sent to a server via send\+With\+Json\+Object\+Return() function which is going to return all details for the newly created field.
+
+
+\begin{DoxyParams}{Parameters}
+{\em field\+Name} & Name of the field as a string \\
+\hline
+{\em longitude} & Geographical longitude of the field \\
+\hline
+{\em latitude} & Geographical latitude of the field \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+J\+S\+O\+N\+Object with the details of the newly created field. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classiotclient_1_1Message_aab1d4eea6ba3c4172d599aafc5898dfc}\label{classiotclient_1_1Message_aab1d4eea6ba3c4172d599aafc5898dfc}} 
+\index{iotclient\+::\+Message@{iotclient\+::\+Message}!add\+Weather\+Station\+Data@{add\+Weather\+Station\+Data}}
+\index{add\+Weather\+Station\+Data@{add\+Weather\+Station\+Data}!iotclient\+::\+Message@{iotclient\+::\+Message}}
+\subsubsection{\texorpdfstring{add\+Weather\+Station\+Data()}{addWeatherStationData()}}
+{\footnotesize\ttfamily boolean iotclient.\+Message.\+add\+Weather\+Station\+Data (\begin{DoxyParamCaption}\item[{long}]{weather\+Station\+Id,  }\item[{double}]{temperature,  }\item[{double}]{barometric\+Pressure,  }\item[{double}]{wind\+Speed,  }\item[{double}]{relative\+Humidity,  }\item[{long}]{air\+Quality\+Index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Inputs a weather data to a database table.
+
+This function creates J\+S\+O\+N\+Object with key \char`\"{}\+W\+E\+A\+T\+H\+E\+R\+S\+T\+A\+T\+I\+O\+N\+D\+A\+T\+A\+A\+D\+D\char`\"{} key having a value of another J\+S\+O\+N\+Object containing weather data which is obtained from the parameters of this function.
+
+First parameter, weather\+Station\+Id must be a valid ID number of previously present weather station on the system. Otherwise, adding weather\+Station\+Data would fail and this function will return false.
+
+
+\begin{DoxyParams}{Parameters}
+{\em weather\+Station\+Id} & ID number of weather station this data belongs \\
+\hline
+{\em temperature} & Temperature \\
+\hline
+{\em barometric\+Pressure} & Barometric pressure \\
+\hline
+{\em wind\+Speed} & Wind speed \\
+\hline
+{\em relative\+Humidity} & Relative humidity, in percentage \\
+\hline
+{\em air\+Quality\+Index} & Air quality index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Boolean value, true if data is successfully entered in a database. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classiotclient_1_1Message_a4e2ba3e3d5156b8014443aab39e240fc}\label{classiotclient_1_1Message_a4e2ba3e3d5156b8014443aab39e240fc}} 
+\index{iotclient\+::\+Message@{iotclient\+::\+Message}!auth\+User@{auth\+User}}
+\index{auth\+User@{auth\+User}!iotclient\+::\+Message@{iotclient\+::\+Message}}
+\subsubsection{\texorpdfstring{auth\+User()}{authUser()}}
+{\footnotesize\ttfamily boolean iotclient.\+Message.\+auth\+User (\begin{DoxyParamCaption}\item[{String}]{username,  }\item[{String}]{password }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Authenticates the user based on username and password combination.
+
+This method creates J\+S\+O\+N\+Object with key \char`\"{}\+A\+U\+T\+H\+U\+S\+E\+R\char`\"{} having a value of another J\+S\+O\+N\+Object which contains username and password. Root object is then send to a server via send\+With\+Boolean\+Return() function, which is going to return true if username and password combination is present in a database table.
+
+
+\begin{DoxyParams}{Parameters}
+{\em username} & Username in string format \\
+\hline
+{\em password} & Password in string format \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Boolean value, true only if user is successfully authenticated. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classiotclient_1_1Message_a22814eaf8f1a8a3bb07b7823c52c83e8}\label{classiotclient_1_1Message_a22814eaf8f1a8a3bb07b7823c52c83e8}} 
+\index{iotclient\+::\+Message@{iotclient\+::\+Message}!get\+All\+Fields@{get\+All\+Fields}}
+\index{get\+All\+Fields@{get\+All\+Fields}!iotclient\+::\+Message@{iotclient\+::\+Message}}
+\subsubsection{\texorpdfstring{get\+All\+Fields()}{getAllFields()}}
+{\footnotesize\ttfamily J\+S\+O\+N\+Array iotclient.\+Message.\+get\+All\+Fields (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Gets all fields from a database table.
+
+This function creates J\+S\+O\+N\+Object with key \char`\"{}\+R\+E\+T\+U\+R\+N\+A\+L\+L\+F\+I\+E\+L\+D\+S\char`\"{} having a value of true. Object is then sent to a server via send\+With\+Json\+Array\+Return() function which is going to return J\+S\+O\+N\+Array of J\+S\+O\+N\+Objects, one J\+S\+O\+N\+Object for each field in the database.
+
+\begin{DoxyReturn}{Returns}
+J\+S\+O\+N\+Array containing information for all fields in the database table. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/ivica/\+Coding/\+Java/\+C\+S\+\_\+\+I\+O\+T/iotclient/src/iotclient/Message.\+java\end{DoxyCompactItemize}

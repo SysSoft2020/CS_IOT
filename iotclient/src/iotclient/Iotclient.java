@@ -17,7 +17,7 @@ public class Iotclient {
      */
     public static void main(String[] args) {
         Message msg = new Message();
-        System.out.println(msg.addWeatherStationData(0, 2, 33, 0, 0, (int)0));
+        System.out.println(msg.addWeatherStationData(1, 2, 33, 2, 2, 0));
 
     }
 }

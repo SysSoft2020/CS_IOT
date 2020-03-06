@@ -10,10 +10,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.simple.*;
 import org.json.simple.parser.*;
+import org.sqlite.SQLiteConfig;
 
 public class Database {
     /**
-     * Function that returns opened database object
+     * Function that returns opened database object.
      * 
      * This function is called before making any call to a 
      * sqlite3 database.After successful database operation, 
@@ -28,7 +29,9 @@ public class Database {
             String dbURL = "jdbc:sqlite:database";
             Connection conn = null;
             try {
-                conn = DriverManager.getConnection(dbURL);
+                SQLiteConfig dbConfig = new SQLiteConfig();
+                dbConfig.enforceForeignKeys(true);
+                conn = DriverManager.getConnection(dbURL,dbConfig.toProperties());
                 return conn;
             } catch (SQLException ex) {
                 Logger.getLogger(Iotserver.class.getName()).log(Level.SEVERE, null, ex);
@@ -45,7 +48,7 @@ public class Database {
         return null;
     }
     /**
-     * Function that closes database object passed to it
+     * Function that closes database object passed to it.
      * 
      * @param conn Database object 
      */
@@ -58,7 +61,7 @@ public class Database {
     }
     
     /**
-     * Function that accesses database in order to verify combination of username and password
+     * Function that accesses database in order to verify combination of username and password.
      * 
      * @param username Username for the user, as string
      * @param password Password for the user, as string
@@ -83,7 +86,7 @@ public class Database {
         return false;
     }
     /**
-     * Function that accesses database in order to add field to the system
+     * Function that accesses database in order to add field to the system.
      * 
      * @param fieldName Name of the field, as string
      * @param latitude Geographical latitude, as double number
@@ -113,30 +116,51 @@ public class Database {
         return obj;
     }
     
-    public boolean addWeatherStationData(long weatherStation , double temperature, double barometricPressure, double windSpeed, double relativeHumidity, long airQualityIndex){
+    /**
+     * Function that enters weather station data to a weatherStationData table.
+     * 
+     * Data entered to a table depends on the arguments provided to this method.
+     * Function returns true if data is inserted successfully. First parameter,
+     * weatherStationId must be a valid ID number of previously present weather
+     * station in weatherStation table, otherwise insert will fail (FOREIGN KEY
+     * CONSTRAINT).
+     * 
+     * @param weatherStationId ID number of previously existing weather station
+     * @param temperature 
+     * @param barometricPressure
+     * @param windSpeed
+     * @param relativeHumidity
+     * @param airQualityIndex
+     * @return Boolean value, true if data is inserted successfully, otherwise false
+     */
+    public boolean addWeatherStationData(long weatherStationId , double temperature, double barometricPressure, double windSpeed, double relativeHumidity, long airQualityIndex){
         
         Connection db = openDB();
         String sql = "INSERT INTO weatherStationData ('weatherStation','temperature','barometricPressure','windSpeed','relativeHumidity','airQualityIndex') VALUES (?,?,?,?,?,?)";
         try {
             PreparedStatement statement = db.prepareStatement(sql);
-            statement.setLong(1, weatherStation);
+            statement.setLong(1, weatherStationId);
             statement.setDouble(2,temperature);
             statement.setDouble(3,barometricPressure);
             statement.setDouble(4,windSpeed);
             statement.setDouble(5, relativeHumidity);
             statement.setLong(6,airQualityIndex);
-            
-            return(statement.execute());
+            int executeUpdate = statement.executeUpdate();
+            return true;
         } catch (SQLException ex) {
+            System.out.println("Error is: " + ex.getErrorCode());
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return true;
+        return false;
     }
     /**
-     * Function that accesses database in order to retreive information about field based on field name
+     * Function that accesses database in order to retrieve information about field based on field name.
+     * 
+     * Use this function when you want to return only one row from any given
+     * table in the database, i.e. SELECT * FROM field WHERE id = 1;.
      * 
      * @param fieldName Name of the field, as string
-     * @return JSONObject containing data about entered field 
+     * @return JSONObject containing data about specified field 
      */
     public JSONObject getFieldData(String fieldName) {
         JSONObject newFieldData = new JSONObject();
@@ -159,6 +183,17 @@ public class Database {
 
     }
     
+    /**
+     * Function that accesses database in order to retrieve information about field based on field name.
+     * 
+     * Use this function if you want to return data after you insert it into
+     * a database and when you want to return only one row from any given
+     * table in the database, i.e. SELECT * FROM field WHERE id = 1;.
+     * 
+     * @param db Database object, must be previously open
+     * @param fieldName Name of the field, as string
+     * @return JSONObject containing data about specified field
+     */
     public JSONObject getFieldData(Connection db,String fieldName) {
         JSONObject newFieldData = new JSONObject();
         try {
@@ -178,7 +213,10 @@ public class Database {
 
     }
     /**
-     * Function that accesses the database in order to return information about all fields stored in database
+     * Function that accesses the database in order to return information about all fields stored in database.
+     * 
+     * Use this function when you want to obtain more that one row from the table,
+     * i.e. on SELECT * FROM field;.
      * 
      * @return JSONArray ,containing JSONObject with data for each field stored in database 
      */
