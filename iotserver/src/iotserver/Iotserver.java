@@ -22,7 +22,7 @@ public class Iotserver {
                 DataOutputStream dos = new DataOutputStream(s.getOutputStream());
                 System.out.println("Assigning new thread for this client");
                 // create a new thread object 
-                Thread t = new ClientHandler(s, dis, dos);
+                Thread t = new DataHandler(s, dis, dos);
                 // Invoking the start() method 
                 t.start();
             } catch (IOException e) {

@@ -6,12 +6,12 @@ import java.util.logging.Logger;
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
-public class ClientHandler extends Thread {
+public class DataHandler extends Thread {
     final DataInputStream dis;
     final DataOutputStream dos;
     final Socket s;
     // Constructor 
-    public ClientHandler(Socket s, DataInputStream dis, DataOutputStream dos) {
+    public DataHandler(Socket s, DataInputStream dis, DataOutputStream dos) {
         this.s = s;
         this.dis = dis;
         this.dos = dos;
@@ -31,9 +31,11 @@ public class ClientHandler extends Thread {
                     String userName = (String) userDetails.get("username");
                     String password = (String) userDetails.get("password");
                     System.out.println(message.toString());
-                    Database db = new Database();
-                    boolean isUserValid = db.authUser(userName, password);
-                    dos.writeBoolean(isUserValid);
+                    //TODO : Process data accordingly, store to database or display in gui
+                    //Database db = new Database();
+                    //boolean isUserValid = db.authUser(userName, password);
+                    //dos.writeBoolean(isUserValid);
+                    dos.writeBoolean(true);
                 }
                 
                 if (message.containsKey("FIELDADD")){
@@ -43,38 +45,48 @@ public class ClientHandler extends Thread {
                     double latitude = (double) fieldDetails.get("latitude");
                     double longitude = (double) fieldDetails.get("longitude");
                     System.out.println(message.toString());
-                    Database db = new Database();
-                    JSONObject data = db.addField(fieldName, latitude, longitude);
-                    dos.writeUTF(data.toString());
+                    //TODO : Process data accordingly, store to database or display in gui
+                    //Database db = new Database();
+                    //JSONObject data = db.addField(fieldName, latitude, longitude);
+                    dos.writeUTF(fieldDetails.toString()); //just echo out data for now
                 }
                 
-                if (message.containsKey("WEATHERSTATIONDATAADD")){
-                    JSONObject fieldDetails = (JSONObject) message.get("WEATHERSTATIONDATAADD");
-                    System.out.println(fieldDetails);
-                    long  weatherStation =  (long) fieldDetails.get("weatherStation");
-                    double temperature = (double) fieldDetails.get("temperature");
-                    double barometricPressure = (double) fieldDetails.get("barometricPressure");
-                    double windSpeed = (double) fieldDetails.get("windSpeed");
-                    double relativeHumidity = (double) fieldDetails.get("relativeHumidity");
-                    long airQualityIndex = (long) fieldDetails.get("airQualityIndex");
-                    System.out.println(message.toString());
-                    Database db = new Database();
-                    boolean x = db.addWeatherStationData(weatherStation, temperature, barometricPressure,windSpeed,relativeHumidity,airQualityIndex);
-                    dos.writeBoolean(x);
+                if(message.containsKey("ADDWEATHERSTATION")){
+                    JSONObject weatherStationDetails = (JSONObject) message.get("ADDWEATHERSTATION");
+                    System.out.println(weatherStationDetails.toString());
+                    String fieldName = (String) weatherStationDetails.get("fieldName");
+                    double latitude = (double) weatherStationDetails.get("latitude");
+                    double longitue = (double) weatherStationDetails.get("longitude");
+                    String serialNumber = (String) weatherStationDetails.get("serialNumber");
+                    //TODO : Process data accordingly, store to database or display in gui
+                    dos.writeUTF(weatherStationDetails.toString()); //just echo out data for now
+                }
+                
+                if (message.containsKey("ADDWEATHERSTATIONDATA")){
+                    JSONObject weatherStationDataDetails = (JSONObject) message.get("ADDWEATHERSTATIONDATA");
+                    System.out.println(weatherStationDataDetails.toString());
+                    long  weatherStation =  (long) weatherStationDataDetails.get("weatherStation");
+                    double temperature = (double) weatherStationDataDetails.get("temperature");
+                    double barometricPressure = (double) weatherStationDataDetails.get("barometricPressure");
+                    double windSpeed = (double) weatherStationDataDetails.get("windSpeed");
+                    double relativeHumidity = (double) weatherStationDataDetails.get("relativeHumidity");
+                    long airQualityIndex = (long) weatherStationDataDetails.get("airQualityIndex");
+                    //TODO : Process data accordingly, store to database or display in gui
+                    //Database db = new Database();
+                    //boolean x = db.addWeatherStationData(weatherStation, temperature, barometricPressure,windSpeed,relativeHumidity,airQualityIndex);
+                    dos.writeBoolean(true); //just send out dummy true bool for now
                 }
                 
                 if (message.containsKey("RETURNALLFIELDS")){
-                    Database db = new Database();
-                    JSONArray data = db.getFieldData();                    
-                    System.out.println(message.toString());
-                    dos.writeUTF(data.toString());
+                    //TODO : Process data accordingly, store to database or display in gui
+                    dos.writeUTF(message.toString()); //just echo out data for now
                 }
             
             /******PROCESSING LOGIC ENDS*******/
             
             s.close();
         } catch (IOException | ParseException ex) {
-            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DataHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

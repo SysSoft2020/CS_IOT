@@ -226,6 +226,32 @@ public class Message {
         fields = (JSONArray) fields.get(0);
         return fields;
     }
+    
+    /**
+     * Adds and binds a weather station to a specified field.
+     * 
+     * This method creates JSONObject with key "ADDWEATHERSTATION" having a  
+     * value of another JSONObject containing field and other relevant data
+     * for newly created weather station.
+     * 
+     * @param fieldName Name of the field to which new weather station is bound
+     * @param longitude Geographical longitude of weather station
+     * @param latitude Geographical latitude of weather station
+     * @param serialNumber Serial number of weather station
+     * @return JSONObject containing data information for newly added weather station.
+     */
+    JSONObject addWeatherStation(String fieldName, double longitude, double latitude, String serialNumber) {
+        JSONObject fieldData = new JSONObject();
+        fieldData.put("fieldName", fieldName);
+        fieldData.put("latitude", latitude);
+        fieldData.put("longitude", longitude);
+        fieldData.put("serialNumber", serialNumber);
+        JSONObject request = new JSONObject();
+        request.put("ADDWEATHERSTATION", fieldData);
+        
+        JSONObject returnData = sendWithJsonObjectReturn(request);
+        return returnData;
+    }
 
     /**
      * Inputs a weather data to a database table.
@@ -255,7 +281,7 @@ public class Message {
         fieldData.put("relativeHumidity", relativeHumidity);
         fieldData.put("airQualityIndex", airQualityIndex);
         JSONObject request = new JSONObject();
-        request.put("WEATHERSTATIONDATAADD", fieldData);
+        request.put("ADDWEATHERSTATIONDATA", fieldData);
         return sendWithBooleanReturn(request);
     }
 }
