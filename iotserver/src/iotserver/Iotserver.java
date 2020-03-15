@@ -1,21 +1,33 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package iotserver;
+import java.io.*;
+import java.text.*;
+import java.util.*;
+import java.net.*;
 
-/**
- *
- * @author ivica
- */
 public class Iotserver {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public static void main(String[] args) throws IOException {
+        Database db = new Database();
+        // server is listening on port 5056 
+        ServerSocket ss = new ServerSocket(5056);
+        // running infinite loop for getting client request 
+        while (true) {
+            Socket s = null;
+            try {
+                // socket object to receive incoming client requests 
+                s = ss.accept();
+                System.out.println("A new client is connected : " + s);
+                // obtaining input and out streams 
+                DataInputStream dis = new DataInputStream(s.getInputStream());
+                DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+                System.out.println("Assigning new thread for this client");
+                // create a new thread object 
+                Thread t = new ClientHandler(s, dis, dos);
+                // Invoking the start() method 
+                t.start();
+            } catch (IOException e) {
+            }
+        }
+        
     }
-    
 }
