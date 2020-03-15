@@ -30,6 +30,7 @@ public class ClientHandler extends Thread {
                     JSONObject userDetails = (JSONObject) message.get("AUTHUSER");
                     String userName = (String) userDetails.get("username");
                     String password = (String) userDetails.get("password");
+                    System.out.println(message.toString());
                     Database db = new Database();
                     boolean isUserValid = db.authUser(userName, password);
                     dos.writeBoolean(isUserValid);
@@ -41,6 +42,7 @@ public class ClientHandler extends Thread {
                     String fieldName = (String) fieldDetails.get("fieldName");
                     double latitude = (double) fieldDetails.get("latitude");
                     double longitude = (double) fieldDetails.get("longitude");
+                    System.out.println(message.toString());
                     Database db = new Database();
                     JSONObject data = db.addField(fieldName, latitude, longitude);
                     dos.writeUTF(data.toString());
@@ -55,6 +57,7 @@ public class ClientHandler extends Thread {
                     double windSpeed = (double) fieldDetails.get("windSpeed");
                     double relativeHumidity = (double) fieldDetails.get("relativeHumidity");
                     long airQualityIndex = (long) fieldDetails.get("airQualityIndex");
+                    System.out.println(message.toString());
                     Database db = new Database();
                     boolean x = db.addWeatherStationData(weatherStation, temperature, barometricPressure,windSpeed,relativeHumidity,airQualityIndex);
                     dos.writeBoolean(x);
@@ -62,7 +65,8 @@ public class ClientHandler extends Thread {
                 
                 if (message.containsKey("RETURNALLFIELDS")){
                     Database db = new Database();
-                    JSONArray data = db.getFieldData();
+                    JSONArray data = db.getFieldData();                    
+                    System.out.println(message.toString());
                     dos.writeUTF(data.toString());
                 }
             
