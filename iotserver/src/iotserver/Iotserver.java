@@ -18,11 +18,10 @@ public class Iotserver {
                 s = ss.accept();
                 System.out.println("A new client is connected : " + s);
                 // obtaining input and out streams 
-                DataInputStream dis = new DataInputStream(s.getInputStream());
-                DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+                
                 System.out.println("Assigning new thread for this client");
                 // create a new thread object 
-                Thread t = new DataHandler(s, dis, dos);
+                Thread t = new DataHandler(s);
                 // Invoking the start() method 
                 t.start();
             } catch (IOException e) {

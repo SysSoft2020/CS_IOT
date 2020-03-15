@@ -24,6 +24,14 @@ public class Message {
         this.outputStream = null;
     }
     
+    public void connectToServer(){
+        setupConnectionToServer();
+    }
+    
+    public void closeConnection(){
+        closeConnectionToServer();
+    }
+    
     /**
      * Creates connection to a server over TCP/IP protocol.
      * 
@@ -74,7 +82,6 @@ public class Message {
     private boolean sendWithBooleanReturn(JSONObject data) {
 
         boolean result = false;
-        setupConnectionToServer();
         try {
             try {
                 outputStream.writeUTF(data.toString());
@@ -85,7 +92,6 @@ public class Message {
         } catch (IOException ex) {
             Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
         }
-        closeConnectionToServer();
         return result;
     }
     
@@ -104,7 +110,6 @@ public class Message {
      */
     private JSONArray sendWithJsonArrayReturn(JSONObject data) {
         System.out.println("Sending to server");
-        setupConnectionToServer();
         try {
             try {
                 outputStream.writeUTF(data.toString());
@@ -122,7 +127,6 @@ public class Message {
         } catch (IOException ex) {
             Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
         }
-        closeConnectionToServer();
         return null;
     }
 
@@ -138,7 +142,6 @@ public class Message {
      * @return 
      */
     private JSONObject sendWithJsonObjectReturn(JSONObject data) {
-        setupConnectionToServer();
         try {
 
             try {
@@ -156,7 +159,6 @@ public class Message {
         } catch (IOException ex) {
             Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
         }
-        closeConnectionToServer();
         return null;
     }
     
