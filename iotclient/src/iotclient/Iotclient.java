@@ -18,10 +18,8 @@ public class Iotclient {
     public static void main(String[] args) {
         Message msg = new Message();
         msg.connectToServer();
-        System.out.println(msg.addWeatherStationData(1, 2, 33, 2, 2, 0));
         System.out.println(msg.authUser("ivica", "alexandria"));
+        System.out.println(msg.addWeatherStationData(1, 2, 33, 2, 2, 0));
         msg.closeConnection();
-        
-
     }
 }
