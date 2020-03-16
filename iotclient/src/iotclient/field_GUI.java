@@ -191,6 +191,14 @@ public class field_GUI extends javax.swing.JFrame {
         });
     }
     
+    /**
+     * appends the combobox with a up to date list of all available fields.
+     * 
+     * The function takes in a string array of all available fields and updates 
+     * whenever a new field is added.
+     * 
+     * @param Fields  string array of fields.
+     */
     public void populateComboBox(String[] Fields){
         jComboBox1.setModel(new DefaultComboBoxModel<String>(Fields));
     }
