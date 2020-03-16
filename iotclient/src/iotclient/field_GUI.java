@@ -6,7 +6,8 @@
 package iotclient;
 import java.awt.*;
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -19,6 +20,10 @@ public class field_GUI extends javax.swing.JFrame {
      */
     public field_GUI() {
         initComponents();
+        
+        String[] Fields = {"Field 1", "Field 2", "Field 3", "Field 4", "Field 5", "Field 6", "Field 7"}; //array of available fields
+        populateComboBox(Fields);  //populating the combobox with available Fields
+       
     }
 
     /**
@@ -39,25 +44,22 @@ public class field_GUI extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
             }
         });
 
         jLabel1.setText("Fields:");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        jList1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jList1MouseClicked(evt);
+            }
         });
         jScrollPane1.setViewportView(jList1);
 
@@ -69,21 +71,12 @@ public class field_GUI extends javax.swing.JFrame {
 
         jLabel3.setText("Data from selected WeatherStation:");
 
-        jButton1.setText("Select Field");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         jButton2.setText("EXIT");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-
-        jButton3.setText("Select Weather Station");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -92,28 +85,21 @@ public class field_GUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel2))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 119, Short.MAX_VALUE)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 336, Short.MAX_VALUE)
                         .addComponent(jButton2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 562, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 49, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(20, 20, 20))
         );
         jPanel1Layout.setVerticalGroup(
@@ -121,28 +107,21 @@ public class field_GUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton2)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(2, 2, 2)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton3)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(19, 19, 19))
         );
@@ -161,21 +140,20 @@ public class field_GUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
        
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        String[] array = arrayList.toArray(new String[arrayList.size()]);
-        jComboBox comboBox = new JComboBox(array);
-       
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //Field button
-        listModel = new DefaultListModel();
-        list = new JList(listModel);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        //exit button, exits the gui
         System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        //whenever user switches the field, showDataInField triggers
+        showDataInField();
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
+        //on mouse click index of the clicked item is sent to showWeatherStationData function which displays the local data
+        showWeatherStationData();
+    }//GEN-LAST:event_jList1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -186,6 +164,7 @@ public class field_GUI extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+      
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -211,11 +190,125 @@ public class field_GUI extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void populateComboBox(String[] Fields){
+        jComboBox1.setModel(new DefaultComboBoxModel<String>(Fields));
+    }
+    
+     /**
+     * Displays all Weather Stations located on the field user selects.
+     * 
+     * This method utilizes the jComboBox1ItemStateChanged, so whenever combo box value changes
+     * the function displays appropriate weather stations for selected field.
+     * 
+     * Use this function when you need to display all available weather stations for a field.
+     * 
+     * @param String array containing names of available fields.
+     */
+    
+    public void showDataInField(){
+        String selectedField = jComboBox1.getSelectedItem().toString();
+        DefaultListModel dlm = new DefaultListModel();
+        //ArrayList<String> field = new ArrayList<String>();
+        
+        String[] field1 = {"Weather Station 1","Weather Station 2","Weather Station 3","Weather Station 4"};
+        String[] field2 = {"Weather Station 1","Weather Station 2","Weather Station 3","Weather Station 4","Weather Station 5","Weather Station 6"};
+        String[] field3 = {"Weather Station 1","Weather Station 2","Weather Station 3"};
+        String[] field4 = {"Weather Station 1","Weather Station 2"};
+        String[] field5 = {"Weather Station 1"};
+        String[] field6 = {"Weather Station 1","Weather Station 2","Weather Station 3"};
+        String[] field7 = {"Weather Station 1","Weather Station 2"};
+        
+         if (selectedField == "Field 1"){
+            for (int i = 0; i < field1.length; i++)
+            dlm.addElement(field1[i]);
+        }
+        if (selectedField == "Field 2"){
+            for (int i = 0; i < field2.length; i++)
+            dlm.addElement(field2[i]);
+        }
+        if (selectedField == "Field 3"){
+            for (int i = 0; i < field3.length; i++)
+            dlm.addElement(field3[i]);
+        }
+        if (selectedField == "Field 4"){
+            for (int i = 0; i < field4.length; i++)
+            dlm.addElement(field4[i]);
+        }
+        if (selectedField == "Field 5"){
+            for (int i = 0; i < field5.length; i++)
+            dlm.addElement(field5[i]);
+        }
+        if (selectedField == "Field 6"){
+            for (int i = 0; i < field6.length; i++)
+            dlm.addElement(field6[i]);
+        }
+        if (selectedField == "Field 7"){
+            for (int i = 0; i < field7.length; i++)
+            dlm.addElement(field7[i]);
+        }
+        jList1.setModel(dlm); 
+    }
+    
+    
+    /**
+     * Displays Weather Station data according to unique index.
+     * 
+     * This method utilizes the mouse click event, takes the current selected index from JList
+     * and matches it with the appropriate string array to display in Text Area.
+     * 
+     * Use this function when you need to display measurements made by a Weather Station 
+     * on the specified field.
+     */
+    
+    public void showWeatherStationData(){
+        
+        String indexOfWeatherStation = String.valueOf(jList1.getModel().getElementAt(jList1.getSelectedIndex()));
+        
+        String[] data1 = {"Weather Station 1: \n","weather index: 12 \n","erosion: 12%\n", "humidity: 4%\n", "chance of rain: 0%\n"};
+        String[] data2 = {"Weather Station 2: \n","weather index: 11 \n","erosion: 22%\n", "humidity: 34%\n", "chance of rain: 12%\n"};
+        String[] data3 = {"Weather Station 3: \n","weather index: 22 \n","erosion: 9%\n", "humidity: 30%\n", "chance of rain: 99%\n"};
+        String[] data4 = {"Weather Station 4: \n","weather index: 7 \n","erosion: 97%\n", "humidity: 42%\n", "chance of rain: 60%\n"};
+        String[] data5 = {"Weather Station 5: \n","weather index: 2 \n","erosion: 33%\n", "humidity: 57%\n", "chance of rain: 20%\n"};
+        String[] data6 = {"Weather Station 6: \n","weather index: 100 \n","erosion: 18%\n", "humidity: 2%\n", "chance of rain: 100%\n"};
+        
+        if (indexOfWeatherStation == "Weather Station 1"){
+            for (int i = 0; i < data1.length;i++)
+            jTextArea1.append(data1[i]);
+            jTextArea1.append("\n");
+        }
+        if (indexOfWeatherStation == "Weather Station 2"){
+            for (int i = 0; i < data2.length;i++)
+            jTextArea1.append(data2[i]);
+            jTextArea1.append("\n");
+        }
+        if (indexOfWeatherStation == "Weather Station 3"){
+            for (int i = 0; i < data3.length;i++)
+            jTextArea1.append(data3[i]);
+            jTextArea1.append("\n");
+        }
+        if (indexOfWeatherStation == "Weather Station 4"){
+            for (int i = 0; i < data4.length;i++)
+            jTextArea1.append(data4[i]);
+            jTextArea1.append("\n");
+        }
+        if (indexOfWeatherStation == "Weather Station 5"){
+            for (int i = 0; i < data5.length;i++)
+            jTextArea1.append(data5[i]);
+            jTextArea1.append("\n");
+        }
+        if (indexOfWeatherStation == "Weather Station 6"){
+            for (int i = 0; i < data6.length;i++)
+            jTextArea1.append(data6[i]);
+            jTextArea1.append("\n");
+        }
+    }
+    
 
+     
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
