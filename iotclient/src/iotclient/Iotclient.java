@@ -18,8 +18,17 @@ public class Iotclient {
     public static void main(String[] args) {
         Message msg = new Message();
         msg.connectToServer();
-        System.out.println(msg.authUser("ivica", "alexandria"));
-        System.out.println(msg.addWeatherStationData(1, 2, 33, 2, 2, 0));
-        msg.closeConnection();
+        System.out.println(msg.authUser("ivica", "alexandria")); //autenthicate this user
+        System.out.println("Starting to listen...");
+        try{
+            while(true){
+                System.out.println(msg.listen());
+            }
+        }
+        finally{
+            System.out.println("Closing connection");
+            msg.closeConnection();
+    }
+        
     }
 }

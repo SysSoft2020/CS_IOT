@@ -16,12 +16,12 @@ public class ServerDataHandler extends Thread {
         this.s = s;
         this.dis = new DataInputStream(s.getInputStream());
         this.dos = new DataOutputStream(s.getOutputStream());
-        Iotserver.clients.add(dos);
+        Iotserver.clients.add(s);
     }
 
     @Override
     public void run() {
-        
+
         while (true) {
             try {
                 String received = dis.readUTF();
@@ -32,84 +32,87 @@ public class ServerDataHandler extends Thread {
                 /******PROCESSING LOGIC GOES HERE******/
                 if (message.containsKey("AUTHUSER")) {
                     JSONObject userDetails = (JSONObject) message.get("AUTHUSER");
+                    System.out.println(message.toString());
                     String userName = (String) userDetails.get("username");
                     String password = (String) userDetails.get("password");
-                    System.out.println(message.toString());
                     //TODO : Process data accordingly, store to database or display in gui
                     //Database db = new Database();
                     //boolean isUserValid = db.authUser(userName, password);
                     //dos.writeBoolean(isUserValid);
-                    dos.writeBoolean(true);
+                    dos.writeUTF("true");
                 }
 
                 if (message.containsKey("FIELDADD")) {
                     JSONObject fieldDetails = (JSONObject) message.get("FIELDADD");
-                    System.out.println(fieldDetails);
+                    System.out.println(message.toString());
                     String fieldName = (String) fieldDetails.get("fieldName");
                     double latitude = (double) fieldDetails.get("latitude");
                     double longitude = (double) fieldDetails.get("longitude");
-                    System.out.println(message.toString());
                     //TODO : Process data accordingly, store to database or display in gui
                     //Database db = new Database();
                     //JSONObject data = db.addField(fieldName, latitude, longitude);
                     Iterator i = Iotserver.clients.iterator();
-                    while(i.hasNext()){
-                        DataOutputStream x = new DataOutputStream((DataOutputStream)i.next());
-                        x.writeUTF(fieldDetails.toString()); //just echo out data for now
+                    while (i.hasNext()) {
+                        Socket sock = (Socket) i.next();
+                        try {
+                            DataOutputStream output = new DataOutputStream(sock.getOutputStream());
+                            output.writeUTF(fieldDetails.toString());
+                        } catch (Exception e) {
+                            Iotserver.clients.remove(sock);
+                        }
                     }
-                    
+
                 }
 
                 if (message.containsKey("ADDWEATHERSTATION")) {
                     JSONObject weatherStationDetails = (JSONObject) message.get("ADDWEATHERSTATION");
-                    System.out.println(weatherStationDetails.toString());
+                    System.out.println(message.toString());
                     String fieldName = (String) weatherStationDetails.get("fieldName");
                     double latitude = (double) weatherStationDetails.get("latitude");
                     double longitue = (double) weatherStationDetails.get("longitude");
                     String serialNumber = (String) weatherStationDetails.get("serialNumber");
                     //TODO : Process data accordingly, store to database or display in gui
                     Iterator i = Iotserver.clients.iterator();
-                    while(i.hasNext()){
-                        DataOutputStream x = new DataOutputStream((DataOutputStream)i.next());
-                        x.writeUTF(weatherStationDetails.toString()); //just echo out data for now
+                    while (i.hasNext()) {
+                        Socket sock = (Socket) i.next();
+                        try {
+                            DataOutputStream output = new DataOutputStream(sock.getOutputStream());
+                            output.writeUTF(weatherStationDetails.toString());
+                        } catch (Exception e) {
+                            Iotserver.clients.remove(sock);
+                        }
                     }
                 }
 
                 if (message.containsKey("ADDWEATHERSTATIONDATA")) {
                     JSONObject weatherStationDataDetails = (JSONObject) message.get("ADDWEATHERSTATIONDATA");
-                    System.out.println(weatherStationDataDetails.toString());
-                    long weatherStation = (long) weatherStationDataDetails.get("weatherStation");
+                    System.out.println(message.toString());
+                    double weatherStation = (double) weatherStationDataDetails.get("weatherStation");
                     double temperature = (double) weatherStationDataDetails.get("temperature");
                     double barometricPressure = (double) weatherStationDataDetails.get("barometricPressure");
                     double windSpeed = (double) weatherStationDataDetails.get("windSpeed");
                     double relativeHumidity = (double) weatherStationDataDetails.get("relativeHumidity");
-                    long airQualityIndex = (long) weatherStationDataDetails.get("airQualityIndex");
+                    double airQualityIndex = (double) weatherStationDataDetails.get("airQualityIndex");
                     //TODO : Process data accordingly, store to database or display in gui
                     //Database db = new Database();
                     //boolean x = db.addWeatherStationData(weatherStation, temperature, barometricPressure,windSpeed,relativeHumidity,airQualityIndex);
                     Iterator i = Iotserver.clients.iterator();
-                    while(i.hasNext()){
-                        DataOutputStream x = new DataOutputStream((DataOutputStream)i.next());
-                        x.writeBoolean(true); //just echo out data for now
-                    }                
+                    while (i.hasNext()) {
+                        Socket sock = (Socket) i.next();
+                        try {
+                            DataOutputStream output = new DataOutputStream(sock.getOutputStream());
+                            output.writeUTF(weatherStationDataDetails.toString());
+                        } catch (Exception e) {
+                            Iotserver.clients.remove(sock);
+                        }
+                    }
                 }
-
-                if (message.containsKey("RETURNALLFIELDS")) {
-                    //TODO : Process data accordingly, store to database or display in gui
-                    Iterator i = Iotserver.clients.iterator();
-                    while(i.hasNext()){
-                        DataOutputStream x = new DataOutputStream((DataOutputStream)i.next());
-                        x.writeUTF(message.toString()); //just echo out data for now
-                    }                
-                }
-
                 /******PROCESSING LOGIC ENDS*******/
 
-            } catch (EOFException exception) {
-                Iotserver.clients.remove(this.dos);
+            } catch (Exception exception) {
+                Iotserver.clients.remove(this.s);
+                System.out.println("Client disconected, terminate thead");
                 break; //client has disconnected, terminate this thread
-            } catch (IOException | ParseException ex) {
-                Logger.getLogger(ServerDataHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

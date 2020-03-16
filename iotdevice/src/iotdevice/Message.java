@@ -1,4 +1,4 @@
-package iotclient;
+package iotdevice;
 import org.json.simple.*;
 import org.json.simple.parser.*;
 import java.io.*;
@@ -66,15 +66,6 @@ public class Message {
             Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public String listen(){
-        try {
-            return inputStream.readUTF();
-        } catch (IOException ex) {
-            Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return "Error";
-    }
 
     /**
      * Sends a JSONObject over TCP/IP socket to a server.
@@ -88,8 +79,8 @@ public class Message {
      * @param data JSONObject containing a message data.
      * @return Boolean value, depending on server response.
      */
-     private boolean sendWithBooleanReturn(JSONObject data) {
-         
+    private boolean sendWithBooleanReturn(JSONObject data) {
+
         boolean result = false;
         try {
             try {
