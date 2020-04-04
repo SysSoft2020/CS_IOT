@@ -36,38 +36,38 @@ public class field_GUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        fieldSelectBox = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        sensorList = new javax.swing.JList<>();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        sensorDataField = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+        fieldSelectBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboBox1ItemStateChanged(evt);
+                fieldSelectBoxItemStateChanged(evt);
             }
         });
 
         jLabel1.setText("Fields:");
 
-        jList1.addMouseListener(new java.awt.event.MouseAdapter() {
+        sensorList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jList1MouseClicked(evt);
+                sensorListMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(sensorList);
 
         jLabel2.setText("WeatherStation/s in selected field:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        sensorDataField.setColumns(20);
+        sensorDataField.setRows(5);
+        jScrollPane2.setViewportView(sensorDataField);
 
         jLabel3.setText("Data from selected WeatherStation:");
 
@@ -87,7 +87,7 @@ public class field_GUI extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(fieldSelectBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,7 +117,7 @@ public class field_GUI extends javax.swing.JFrame {
                         .addGap(12, 12, 12)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(fieldSelectBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -145,15 +145,15 @@ public class field_GUI extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+    private void fieldSelectBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fieldSelectBoxItemStateChanged
         //whenever user switches the field, showDataInField triggers
         showDataInField();
-    }//GEN-LAST:event_jComboBox1ItemStateChanged
+    }//GEN-LAST:event_fieldSelectBoxItemStateChanged
 
-    private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
+    private void sensorListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sensorListMouseClicked
         //on mouse click index of the clicked item is sent to showWeatherStationData function which displays the local data
         showWeatherStationData();
-    }//GEN-LAST:event_jList1MouseClicked
+    }//GEN-LAST:event_sensorListMouseClicked
 
     /**
      * @param args the command line arguments
@@ -200,7 +200,7 @@ public class field_GUI extends javax.swing.JFrame {
      * @param Fields  string array of fields.
      */
     public void populateComboBox(String[] Fields){
-        jComboBox1.setModel(new DefaultComboBoxModel<String>(Fields));
+        fieldSelectBox.setModel(new DefaultComboBoxModel<String>(Fields));
     }
     
      /**
@@ -215,7 +215,7 @@ public class field_GUI extends javax.swing.JFrame {
      */
     
     public void showDataInField(){
-        String selectedField = jComboBox1.getSelectedItem().toString();
+        String selectedField = fieldSelectBox.getSelectedItem().toString();
         DefaultListModel dlm = new DefaultListModel();
         //ArrayList<String> field = new ArrayList<String>();
         
@@ -255,7 +255,7 @@ public class field_GUI extends javax.swing.JFrame {
             for (int i = 0; i < field7.length; i++)
             dlm.addElement(field7[i]);
         }
-        jList1.setModel(dlm); 
+        sensorList.setModel(dlm); 
     }
     
     
@@ -271,7 +271,7 @@ public class field_GUI extends javax.swing.JFrame {
     
     public void showWeatherStationData(){
         
-        String indexOfWeatherStation = String.valueOf(jList1.getModel().getElementAt(jList1.getSelectedIndex()));
+        String indexOfWeatherStation = String.valueOf(sensorList.getModel().getElementAt(sensorList.getSelectedIndex()));
         
         String[] data1 = {"Weather Station 1: \n","weather index: 12 \n","erosion: 12%\n", "humidity: 4%\n", "chance of rain: 0%\n"};
         String[] data2 = {"Weather Station 2: \n","weather index: 11 \n","erosion: 22%\n", "humidity: 34%\n", "chance of rain: 12%\n"};
@@ -282,33 +282,33 @@ public class field_GUI extends javax.swing.JFrame {
         
         if (indexOfWeatherStation == "Weather Station 1"){
             for (int i = 0; i < data1.length;i++)
-            jTextArea1.append(data1[i]);
-            jTextArea1.append("\n");
+            sensorDataField.append(data1[i]);
+            sensorDataField.append("\n");
         }
         if (indexOfWeatherStation == "Weather Station 2"){
             for (int i = 0; i < data2.length;i++)
-            jTextArea1.append(data2[i]);
-            jTextArea1.append("\n");
+            sensorDataField.append(data2[i]);
+            sensorDataField.append("\n");
         }
         if (indexOfWeatherStation == "Weather Station 3"){
             for (int i = 0; i < data3.length;i++)
-            jTextArea1.append(data3[i]);
-            jTextArea1.append("\n");
+            sensorDataField.append(data3[i]);
+            sensorDataField.append("\n");
         }
         if (indexOfWeatherStation == "Weather Station 4"){
             for (int i = 0; i < data4.length;i++)
-            jTextArea1.append(data4[i]);
-            jTextArea1.append("\n");
+            sensorDataField.append(data4[i]);
+            sensorDataField.append("\n");
         }
         if (indexOfWeatherStation == "Weather Station 5"){
             for (int i = 0; i < data5.length;i++)
-            jTextArea1.append(data5[i]);
-            jTextArea1.append("\n");
+            sensorDataField.append(data5[i]);
+            sensorDataField.append("\n");
         }
         if (indexOfWeatherStation == "Weather Station 6"){
             for (int i = 0; i < data6.length;i++)
-            jTextArea1.append(data6[i]);
-            jTextArea1.append("\n");
+            sensorDataField.append(data6[i]);
+            sensorDataField.append("\n");
         }
     }
     
@@ -316,15 +316,15 @@ public class field_GUI extends javax.swing.JFrame {
      
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> fieldSelectBox;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea sensorDataField;
+    private javax.swing.JList<String> sensorList;
     // End of variables declaration//GEN-END:variables
 }
