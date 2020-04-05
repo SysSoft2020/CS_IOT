@@ -8,22 +8,15 @@ package iotclient;
 import java.util.*;
 import javax.swing.DefaultListModel;
 
-public class field_GUI extends javax.swing.JFrame {
+public class Gui extends javax.swing.JFrame {
 
-    HashMap<String, HashMap<String,Vector>> fields = new HashMap<String, HashMap<String,Vector>>();
+    public HashMap<String, HashMap<String, Vector>> fields = new HashMap<String, HashMap<String, Vector>>();
 
     /**
      * Creates new form field_GUI
      */
-    public field_GUI() {
+    public Gui() {
         initComponents();
-        fields.put("Field 1", new HashMap<String,Vector>());
-        fields.put("Field 2", new HashMap<String,Vector>());
-        fields.put("Field 3", new HashMap<String,Vector>());
-        fields.get("Field 1").put("Weather station 1", new Vector());
-                fields.get("Field 1").put("Weather station 2", new Vector());
-
-
         populateComboBox();  //populating the combobox with available Fields
 
     }
@@ -143,7 +136,7 @@ public class field_GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        //exit button, exits the gui
+        //exit button, exits the Gui
         System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -154,47 +147,10 @@ public class field_GUI extends javax.swing.JFrame {
 
     private void sensorListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sensorListMouseClicked
         //on mouse click index of the clicked item is sent to showWeatherStationData function which displays the local data
-        System.out.print("Ola");
-                String indexOfWeatherStation = String.valueOf(sensorList.getModel().getElementAt(sensorList.getSelectedIndex()));
+        String indexOfWeatherStation = String.valueOf(sensorList.getModel().getElementAt(sensorList.getSelectedIndex()));
         System.out.print(indexOfWeatherStation);
 
     }//GEN-LAST:event_sensorListMouseClicked
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(field_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(field_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(field_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(field_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new field_GUI().setVisible(true);
-            }
-        });
-    }
 
     /**
      * appends the combobox with a up to date list of all available fields.
@@ -227,8 +183,8 @@ public class field_GUI extends javax.swing.JFrame {
     public void showWeatherStationsInField() {
         String selectedField = fieldSelectBox.getSelectedItem().toString();
         DefaultListModel dlm = new DefaultListModel();
-        
-        HashMap<String,Vector> x = fields.get(selectedField);
+
+        HashMap<String, Vector> x = fields.get(selectedField);
         Set<String> a = x.keySet();
         for (String c : a) {
             dlm.addElement(c);
@@ -279,7 +235,7 @@ public class field_GUI extends javax.swing.JFrame {
                 dlm.addElement(field7[i]);
             }
         }
-        */
+         */
         sensorList.setModel(dlm);
     }
 
