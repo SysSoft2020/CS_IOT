@@ -8,7 +8,7 @@ public class iotclient {
         t1.start();
         Thread t2 = new Thread(new SocketListener(gui));
         t2.start();
-       
+        
     }
     
 }

@@ -21,18 +21,13 @@ public class SocketListener implements Runnable {
     public SocketListener(Gui r) {
         ui = r;
     }
-    
-    public void run(){
-        ui.fields.put("Field 7", new HashMap<String,Vector>());
-        ui.populateComboBox();
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(SocketListener.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        ui.fields.put("Field 8", new HashMap<String,Vector>());
-        ui.populateComboBox();
 
+    public void run() {
+        ui.addSensorToField("Field 1", "Sensor One");
+        ui.addSensorToField("Field 1", "Sensor Two");
+        ui.addSensorToField("Field 1", "Sensor Three");
+        ui.addField("Field 2");
+        ui.addSensorDataToField("Field 2", "Sensor 1", "Olaaa");
 
     }
 
