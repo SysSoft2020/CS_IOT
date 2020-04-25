@@ -2,17 +2,15 @@ package iotserver;
 import java.io.*;
 import java.net.*;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
-public class ServerDataHandler extends Thread {
+public class ConnectionHandler extends Thread {
     final DataInputStream dis;
     final DataOutputStream dos;
     final Socket s;
     // Constructor 
-    public ServerDataHandler(Socket s) throws IOException {
+    public ConnectionHandler(Socket s) throws IOException {
         this.s = s;
         this.dis = new DataInputStream(s.getInputStream());
         this.dos = new DataOutputStream(s.getOutputStream());
@@ -56,8 +54,8 @@ public class ServerDataHandler extends Thread {
                         Socket sock = (Socket) i.next();
                         try {
                             DataOutputStream output = new DataOutputStream(sock.getOutputStream());
-                            output.writeUTF(fieldDetails.toString());
-                        } catch (Exception e) {
+                            output.writeUTF(message.toString());
+                        } catch (IOException e) {
                             Iotserver.clients.remove(sock);
                         }
                     }
@@ -77,8 +75,8 @@ public class ServerDataHandler extends Thread {
                         Socket sock = (Socket) i.next();
                         try {
                             DataOutputStream output = new DataOutputStream(sock.getOutputStream());
-                            output.writeUTF(weatherStationDetails.toString());
-                        } catch (Exception e) {
+                            output.writeUTF(message.toString());
+                        } catch (IOException e) {
                             Iotserver.clients.remove(sock);
                         }
                     }
@@ -101,15 +99,15 @@ public class ServerDataHandler extends Thread {
                         Socket sock = (Socket) i.next();
                         try {
                             DataOutputStream output = new DataOutputStream(sock.getOutputStream());
-                            output.writeUTF(weatherStationDataDetails.toString());
-                        } catch (Exception e) {
+                            output.writeUTF(message.toString());
+                        } catch (IOException e) {
                             Iotserver.clients.remove(sock);
                         }
                     }
                 }
                 /******PROCESSING LOGIC ENDS*******/
 
-            } catch (Exception exception) {
+            } catch (IOException | ParseException exception) {
                 Iotserver.clients.remove(this.s);
                 System.out.println("Client disconected, terminate thead");
                 break; //client has disconnected, terminate this thread
