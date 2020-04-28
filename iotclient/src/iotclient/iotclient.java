@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class iotclient {
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) {
         Gui gui = new Gui();
         Thread t1 = new Thread(new GuiRunner(gui));
         t1.start();
