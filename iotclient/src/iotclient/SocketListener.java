@@ -3,6 +3,7 @@ package iotclient;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import static java.lang.System.exit;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -18,7 +19,7 @@ public class SocketListener implements Runnable {
     Socket s;
     Gui ui = null;
 
-    public SocketListener(Gui r) throws IOException {
+    public SocketListener(Gui r) {
         try {
             ui = r;
             InetAddress ip = InetAddress.getByName("localhost");
@@ -27,6 +28,9 @@ public class SocketListener implements Runnable {
             this.dos = new DataOutputStream(s.getOutputStream());
         } catch (UnknownHostException ex) {
             Logger.getLogger(SocketListener.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(SocketListener.class.getName()).log(Level.SEVERE, null, ex);
+            exit(0);
         }
     }
 
