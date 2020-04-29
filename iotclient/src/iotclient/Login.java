@@ -170,7 +170,7 @@ public class Login extends javax.swing.JFrame {
         {   
             String currentName = users[i];
             System.out.println(currentName);
-            if(name == currentName)
+            if(name.equals(currentName))
             {
                 UserExists = true;
             }
@@ -183,12 +183,12 @@ public class Login extends javax.swing.JFrame {
         
         if(UserExists == true)
         {
-            //get the password from the database, i dont know how to do this
+            //get the password from the database,i dont know how to do this
             String samplePassword = "password";
             //then convert the password from login and compare
             char[] input = jPasswordField1.getPassword();
             String stringInput =String.valueOf(input);  
-            if(stringInput == samplePassword)
+            if(stringInput.equals(samplePassword))
             {
                 PasswordCorrect = true;
             }
@@ -201,6 +201,7 @@ public class Login extends javax.swing.JFrame {
         
         if(UserExists && PasswordCorrect == true)
         {
+            //hides the login screen and lets the user access the GUI
             this.setVisible(false);
             Gui gui = new Gui();
             Thread t1 = new Thread(new GuiRunner(gui));
