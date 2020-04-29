@@ -158,8 +158,8 @@ public class Login extends javax.swing.JFrame {
         Gui gui = new Gui();
         Thread t1 = new Thread(new GuiRunner(gui));
         t1.start();
-        //Thread t2 = new Thread(new SocketListener(gui));
-        //t2.start(); 
+        Thread t2 = new Thread(new SocketListener(gui));
+        t2.start(); 
         
     }//GEN-LAST:event_jButton1MouseClicked
 
