@@ -31,9 +31,8 @@ public class Iotdevice {
                 int rnd = new Random().nextInt(fieldNames.length);
                 String fieldName = fieldNames[rnd];
                 msg.addField(fieldName);
-                //msg.addWeatherStation("fieldNameHere", randomNum*1.2, randomNum/2.12, "serialnumber");
-                //msg.addWeatherStationData(randomNum, randomNum*2.1,1012.32, randomNum*1.11, randomNum*1.41, abs(randomNum));
-                System.out.println("Sent, now going to sleep.");
+                msg.addWeatherStation("fieldNameHere", randomNum*1.2, randomNum/2.12, "serialnumber");
+                msg.addWeatherStationData(randomNum, randomNum*2.1,1012.32, randomNum*1.11, randomNum*1.41, abs(randomNum));
                 try {
                     TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException ex) {

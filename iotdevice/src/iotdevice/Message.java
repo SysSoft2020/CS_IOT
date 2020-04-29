@@ -92,10 +92,7 @@ public class Message {
             } catch (IOException ex) {
                 Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
             }
-            String a = inputStream.readUTF();
-            if ("true".equals(a)) {
-                result = true;
-            }
+            result = inputStream.readBoolean();
 
         } catch (IOException ex) {
             Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);

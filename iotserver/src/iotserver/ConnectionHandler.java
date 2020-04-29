@@ -49,9 +49,18 @@ public class ConnectionHandler extends Thread {
                     System.out.println(message.toString());
                     String userName = (String) userDetails.get("sensorName");
                     String password = (String) userDetails.get("password");
-                    dos.writeUTF("true");
+                    dos.writeBoolean(true);
                     System.out.println("Authed new sensor!");
-                } else {
+                }
+                else {
+                    System.out.println("Auth failed, closing connection!");
+                    s.close();
+                    Thread.currentThread().interrupt();
+                    
+                }
+                
+                while(true) {
+                    received = dis.readUTF();
                     Iterator i = Iotserver.clients.iterator();
                     while (i.hasNext()) {
                         Socket sock = (Socket) i.next();

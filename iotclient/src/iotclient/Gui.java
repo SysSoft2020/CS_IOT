@@ -365,8 +365,13 @@ public class Gui extends javax.swing.JFrame implements Runnable {
         this.setVisible(true);
 
         while (!this.userAuthed) {
-            System.out.println("User is not authed");
-        }
+            try {    
+                 Thread.sleep(1);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
+                exit(0);
+            }
+       }
         
         while (true) {
             try {
@@ -449,9 +454,7 @@ public class Gui extends javax.swing.JFrame implements Runnable {
             } catch (IOException ex) {
                 Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
             }
-            System.out.println("1");
             a = this.dis.readBoolean();
-            System.out.println("2");
 
         } catch (IOException ex) {
             Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
