@@ -11,7 +11,7 @@ public class iotclient {
         //Thread t2 = new Thread(new SocketListener(gui));
         //t2.start();
         Login login = new Login();
-        Thread t1 = new Thread(new LoginRunner(login));
-        t1.start();
+        Thread t3 = new Thread(new LoginRunner(login));
+        t3.start();
     }
 }
