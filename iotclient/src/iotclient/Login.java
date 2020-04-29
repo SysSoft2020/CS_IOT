@@ -5,6 +5,9 @@
  */
 package iotclient;
 
+import java.util.*;
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author Sami Ljimari
@@ -154,12 +157,57 @@ public class Login extends javax.swing.JFrame {
         // login button
         //check credentials when clicked
         //if correct proceed to gui, if incorrect prompt user to try again
-        this.setVisible(false);
-        Gui gui = new Gui();
-        Thread t1 = new Thread(new GuiRunner(gui));
-        t1.start();
-        Thread t2 = new Thread(new SocketListener(gui));
-        t2.start(); 
+        
+        
+        String[] users = {"User1", "User2"};// will be replaced by a list of users from database
+        
+        boolean UserExists = false;
+        boolean PasswordCorrect = false;
+        
+        String name = jTextField1.getText();
+        
+        for(int i = 0; i < users.length;i++)
+        {   
+            String currentName = users[i];
+            System.out.println(currentName);
+            if(name == currentName)
+            {
+                UserExists = true;
+            }
+        }
+        
+        if(UserExists == false)
+        {
+            System.out.println("This username does not exist!");
+        }
+        
+        if(UserExists == true)
+        {
+            //get the password from the database, i dont know how to do this
+            String samplePassword = "password";
+            //then convert the password from login and compare
+            char[] input = jPasswordField1.getPassword();
+            String stringInput =String.valueOf(input);  
+            if(stringInput == samplePassword)
+            {
+                PasswordCorrect = true;
+            }
+            else
+            {
+                System.out.println("Incorrect password!");
+            }
+        }
+        
+        
+        if(UserExists && PasswordCorrect == true)
+        {
+            this.setVisible(false);
+            Gui gui = new Gui();
+            Thread t1 = new Thread(new GuiRunner(gui));
+            t1.start();
+            Thread t2 = new Thread(new SocketListener(gui));
+            t2.start(); 
+        }
         
     }//GEN-LAST:event_jButton1MouseClicked
 
