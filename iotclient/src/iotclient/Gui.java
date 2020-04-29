@@ -5,10 +5,27 @@
  */
 package iotclient;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import static java.lang.System.exit;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class Gui extends javax.swing.JFrame implements Runnable {
+
+    DataInputStream dis;
+    DataOutputStream dos;
+    Socket s;
+    boolean userAuthed = false;
 
     public HashMap< String, HashMap< String, Vector>> fields = new HashMap< String, HashMap< String, Vector>>();
 
@@ -126,6 +143,11 @@ public class Gui extends javax.swing.JFrame implements Runnable {
 
         loginButton.setText("Login");
         loginButton.setName("LoginButton"); // NOI18N
+        loginButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                loginButtonMouseClicked(evt);
+            }
+        });
         loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginButtonActionPerformed(evt);
@@ -246,6 +268,11 @@ public class Gui extends javax.swing.JFrame implements Runnable {
         // TODO add your handling code here:
     }//GEN-LAST:event_loginButtonActionPerformed
 
+    private void loginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButtonMouseClicked
+        // TODO add your handling code here:
+        this.authUser("client1", "password1");
+    }//GEN-LAST:event_loginButtonMouseClicked
+
     /**
      * appends the combobox with a up to date list of all available fields.
      *
@@ -334,6 +361,109 @@ public class Gui extends javax.swing.JFrame implements Runnable {
 
     @Override
     public void run() {
+        setupConnection();
         this.setVisible(true);
+
+        while (!this.userAuthed) {
+            System.out.println("User is not authed");
+        }
+        
+        while (true) {
+            try {
+                System.out.println("Receiving data now");
+                String received = dis.readUTF();
+                System.out.println(received);
+
+                /*
+                    JSONParser jsonParser = new JSONParser();
+                    Object obj = jsonParser.parse(received);
+                    JSONObject message = (JSONObject) obj;
+              
+
+                    if (message.containsKey("FIELDADD")) {
+                        JSONObject fieldDetails = (JSONObject) message.get("FIELDADD");
+                        System.out.println(message.toString());
+                        String fieldName = (String) fieldDetails.get("fieldName");
+                        //double latitude = (double) fieldDetails.get("latitude");
+                        //double longitude = (double) fieldDetails.get("longitude");
+                        this.addField(fieldName);
+                    }
+
+                    if (message.containsKey("ADDWEATHERSTATION")) {
+                        JSONObject weatherStationDetails = (JSONObject) message.get("ADDWEATHERSTATION");
+                        System.out.println(message.toString());
+                        String fieldName = (String) weatherStationDetails.get("fieldName");
+                        double latitude = (double) weatherStationDetails.get("latitude");
+                        double longitue = (double) weatherStationDetails.get("longitude");
+                        String serialNumber = (String) weatherStationDetails.get("serialNumber");
+
+                    }
+
+                    if (message.containsKey("ADDWEATHERSTATIONDATA")) {
+                        JSONObject weatherStationDataDetails = (JSONObject) message.get("ADDWEATHERSTATIONDATA");
+                        System.out.println(message.toString());
+                        double weatherStation = (double) weatherStationDataDetails.get("weatherStation");
+                        double temperature = (double) weatherStationDataDetails.get("temperature");
+                        double barometricPressure = (double) weatherStationDataDetails.get("barometricPressure");
+                        double windSpeed = (double) weatherStationDataDetails.get("windSpeed");
+                        double relativeHumidity = (double) weatherStationDataDetails.get("relativeHumidity");
+                        double airQualityIndex = (double) weatherStationDataDetails.get("airQualityIndex");
+
+                    }
+                 */
+                /**
+                 * ****PROCESSING LOGIC ENDS******
+                 */
+            } catch (IOException ex) {
+                Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
     }
+
+    private void setupConnection() {
+        try {
+            InetAddress ip = InetAddress.getByName("localhost");
+            this.s = new Socket(ip, 5056);
+            this.dis = new DataInputStream(s.getInputStream());
+            this.dos = new DataOutputStream(s.getOutputStream());
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
+            exit(0);
+        } catch (IOException ex) {
+            Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
+            exit(0);
+        }
+    }
+
+    private void authUser(String username, String password) {
+        JSONObject userData = new JSONObject();
+        userData.put("username", username);
+        userData.put("password", password);
+        JSONObject request = new JSONObject();
+        request.put("AUTHUSER", userData);
+        boolean a = false;
+        try {
+            try {
+                this.dos.writeUTF(request.toString());
+            } catch (IOException ex) {
+                Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("1");
+            a = this.dis.readBoolean();
+            System.out.println("2");
+
+        } catch (IOException ex) {
+            Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (a) {
+            System.out.println("User authenticated");
+            this.userAuthed = true;
+        } else {
+            System.out.println("Unable to auth user");
+            this.userAuthed = false;
+        }
+    }
+
 }
