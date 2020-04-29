@@ -11,6 +11,8 @@ import javax.swing.DefaultListModel;
 public class Gui extends javax.swing.JFrame {
 
     public HashMap< String, HashMap< String, Vector>> fields = new HashMap< String, HashMap< String, Vector>>();
+    
+    
 
     public void addField(String fieldName) {
         if (fields.containsKey(fieldName) == false) {
