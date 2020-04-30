@@ -4,9 +4,7 @@
  * and open the template in the editor.
  */
 package iotdevice;
-import static java.lang.Math.abs;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,17 +20,17 @@ public class Iotdevice {
         String[] fieldNames = {"Ruddington Field", "Springfield",
                                 "Blue field","Radnom field",
                                 "Cotton field", "Corn Field"};
+        String[] sensorNames = {"Measuring station 1","Measuring station2","Measuring station3","Measuring station 4","Measuring station5","Measuring station6"};
         try{
             msg.connectToServer();
             msg.authSensor("sensor1", "password1");
             System.out.println("Now sending!");
             while(true){
-                int randomNum = ThreadLocalRandom.current().nextInt(-40, 40 + 1);
                 int rnd = new Random().nextInt(fieldNames.length);
                 String fieldName = fieldNames[rnd];
+                rnd = new Random().nextInt(sensorNames.length);
                 msg.addField(fieldName);
-                msg.addWeatherStation("fieldNameHere", randomNum*1.2, randomNum/2.12, "serialnumber");
-                msg.addWeatherStationData(randomNum, randomNum*2.1,1012.32, randomNum*1.11, randomNum*1.41, abs(randomNum));
+                msg.addWeatherStation(fieldName, sensorNames[rnd]);
                 try {
                     TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException ex) {

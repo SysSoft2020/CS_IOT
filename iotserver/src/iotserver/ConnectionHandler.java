@@ -36,13 +36,16 @@ public class ConnectionHandler extends Thread {
                     System.out.println(message.toString());
                     String userName = (String) userDetails.get("username");
                     String password = (String) userDetails.get("password");
-                    System.out.println("Authed new client!");
                     System.out.println(userName);
-                    dos.writeBoolean(true);
-                    Iotserver.clients.add(s);
-                    System.out.println("Sent ACK back");
+                    boolean auth = this.authClient(userName, password);
+                    dos.writeBoolean(auth);
+                    if (auth) {
+                        Iotserver.clients.add(s);
+                    } else {
+                        s.close();
+                        Thread.currentThread().interrupt();
 
-                    
+                    }
 
                 } else if (message.containsKey("AUTHSENSOR")) {
                     JSONObject userDetails = (JSONObject) message.get("AUTHSENSOR");
@@ -50,23 +53,20 @@ public class ConnectionHandler extends Thread {
                     String userName = (String) userDetails.get("sensorName");
                     String password = (String) userDetails.get("password");
                     dos.writeBoolean(true);
-                    System.out.println("Authed new sensor!");
-                }
-                else {
+                } else {
                     System.out.println("Auth failed, closing connection!");
                     s.close();
                     Thread.currentThread().interrupt();
-                    
+
                 }
-                
-                while(true) {
+
+                while (true) {
                     received = dis.readUTF();
                     Iterator i = Iotserver.clients.iterator();
                     while (i.hasNext()) {
                         Socket sock = (Socket) i.next();
                         try {
                             DataOutputStream output = new DataOutputStream(sock.getOutputStream());
-                            System.out.println("Forwarding message from device to client");
                             output.writeUTF(received);
                         } catch (IOException e) {
                             Iotserver.clients.remove(sock);
@@ -81,5 +81,24 @@ public class ConnectionHandler extends Thread {
                 Logger.getLogger(ConnectionHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    public boolean authClient(String username, String password) {
+        JSONParser parser = new JSONParser();
+        try (Reader reader = new FileReader("clients.txt")) {
+
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+            System.out.println(jsonObject);
+            String pwd = (String) jsonObject.get(username);
+            if(pwd == null){
+                return false;
+            }
+            return (pwd.equals(password));
+        } catch (IOException ex) {
+            Logger.getLogger(Iotserver.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            return false;
+        }
+        return false;
     }
 }
