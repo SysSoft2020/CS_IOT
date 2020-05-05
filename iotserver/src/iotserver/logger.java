@@ -14,31 +14,44 @@ import java.io.IOException;
 
 
 public class logger {
-    private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private final static Logger logger_ = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     
-    public static void main(String[] args)
+    private static void setupLogger()
     {
         LogManager.getLogManager().reset();
-        logger.setLevel(Level.ALL);
+        logger_.setLevel(Level.ALL);
         ConsoleHandler ch = new ConsoleHandler();
         ch.setLevel(Level.ALL);
-        logger.addHandler(ch);
+        logger_.addHandler(ch);
         
         try
         {
             FileHandler fh = new FileHandler("serevrLog.log");
-            fh.setFormatter(new SimpleFormatter());
+            fh.setFormatter(new SimpleFormatter()); // formats the default XML log to simple text
             fh.setLevel(Level.ALL);
-            logger.addHandler(fh);
+            logger_.addHandler(fh);
             
         }
         catch(IOException e)
         {
-            logger.log(Level.SEVERE, "File handler not working :(", e.getCause());
+            logger_.log(Level.SEVERE, "File handler not working :(", e.getCause());
         }
+    }
+    
+    public static void main(String[] args)
+    { 
+        //logger.log(Level.SEVERE, "Sample log"); //testing if log works
+        logger.setupLogger();
+        logger_.info("log startup successful");
         
-        
-        logger.log(Level.SEVERE, "Sample log"); //testing if log works
+        try
+        {
+            throw new java.io.IOException("Couldn't read file");
+        }
+        catch(java.io.IOException e)
+        {
+            logger_.log(Level.SEVERE, "File read error", e);
+        }
     }
     
     public static void test()
