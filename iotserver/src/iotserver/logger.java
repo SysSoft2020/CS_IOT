@@ -20,21 +20,19 @@ public class logger {
     {
         LogManager.getLogManager().reset();
         logger_.setLevel(Level.ALL);
-        ConsoleHandler ch = new ConsoleHandler();
-        ch.setLevel(Level.ALL);
-        logger_.addHandler(ch);
+        
         
         try
         {
-            FileHandler fh = new FileHandler("serevrLog.log");
+            FileHandler fh = new FileHandler("serevrLog.log", true); // true makes the file appended if already in existence
             fh.setFormatter(new SimpleFormatter()); // formats the default XML log to simple text
             fh.setLevel(Level.ALL);
             logger_.addHandler(fh);
             
         }
-        catch(IOException e)
+        catch(java.io.IOException e)
         {
-            logger_.log(Level.SEVERE, "File handler not working :(", e.getCause());
+            logger_.log(Level.SEVERE, "File handler not working :(", e);
         }
     }
     
