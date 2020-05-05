@@ -6,14 +6,9 @@
 package iotserver;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.*;
 
 
 /**
@@ -122,7 +117,24 @@ public class server_gui extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        //Refresh button code, displays updated content of log file
+        File selFile = new File("serverLog.log");
+        BufferedReader in = null;
+        try
+        {
+            in = new BufferedReader(new FileReader(selFile));
+            String str;
+            while ((str = in.readLine()) != null) 
+            {
+                jTextArea1.append(str);
+                jTextArea1.append("\n");
+            }
+        }
+        catch(IOException e)
+        {
+                
+        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

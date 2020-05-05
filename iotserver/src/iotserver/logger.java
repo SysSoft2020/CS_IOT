@@ -24,7 +24,7 @@ public class logger {
         
         try
         {
-            FileHandler fh = new FileHandler("serevrLog.log", true); // true makes the file appended if already in existence
+            FileHandler fh = new FileHandler("serverLog.log", true); // true makes the file appended if already in existence
             fh.setFormatter(new SimpleFormatter()); // formats the default XML log to simple text
             fh.setLevel(Level.ALL);
             logger_.addHandler(fh);
