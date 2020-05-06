@@ -15,13 +15,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.json.simple.JSONObject;
+import javax.swing.DefaultListModel;
 
-
-/**
- *
- * @author Sami Ljimari
- */
 
 
 public class server_gui extends javax.swing.JFrame implements Runnable {
@@ -29,7 +24,6 @@ public class server_gui extends javax.swing.JFrame implements Runnable {
     DataInputStream dis;
     DataOutputStream dos;
     Socket s;
-
 
     public server_gui() {
         initComponents();
@@ -120,12 +114,14 @@ public class server_gui extends javax.swing.JFrame implements Runnable {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //Refresh button code, displays updated content of log file
         jTextArea1.setText("");
         File selFile = new File("serverLog.log");
-        BufferedReader in = null;
+        BufferedReader in;
         try
         {
             in = new BufferedReader(new FileReader(selFile));
@@ -147,7 +143,7 @@ public class server_gui extends javax.swing.JFrame implements Runnable {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JList<String> jList1;
+    static javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -158,10 +154,15 @@ public class server_gui extends javax.swing.JFrame implements Runnable {
     public void run() {
         setupConnection();
         this.setVisible(true);
+        
+        final int test = ConnectionHandler.clientCounter;
+        DefaultListModel dlm = new DefaultListModel();
+        dlm.addElement(test);
+        jList1.setModel(dlm);
 
         while (true) {
             try {
-                System.out.println("Receiving data now");
+                System.out.println("Server GUI connected");
                 String received = dis.readUTF();
                 System.out.println(received);
 
@@ -187,25 +188,4 @@ public class server_gui extends javax.swing.JFrame implements Runnable {
             exit(0);
         }
     }
-
-    private void authUser(String username, String password) {
-        JSONObject userData = new JSONObject();
-        userData.put("username", username);
-        userData.put("password", password);
-        JSONObject request = new JSONObject();
-        request.put("AUTHUSER", userData);
-        boolean a = false;
-        try {
-            try {
-                this.dos.writeUTF(request.toString());
-            } catch (IOException ex) {
-                Logger.getLogger(server_gui.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            a = this.dis.readBoolean();
-
-        } catch (IOException ex) {
-            Logger.getLogger(server_gui.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
 }

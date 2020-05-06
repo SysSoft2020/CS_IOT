@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
@@ -13,6 +14,7 @@ public class ConnectionHandler extends Thread {
     final DataInputStream dis;
     final DataOutputStream dos;
     final Socket s;
+    static int clientCounter;
 
     // Constructor 
     public ConnectionHandler(Socket s) throws IOException, ParseException {
@@ -24,7 +26,6 @@ public class ConnectionHandler extends Thread {
 
     @Override
     public void run() {
-
         while (true) {
             try {
                 String received = dis.readUTF();
@@ -37,6 +38,11 @@ public class ConnectionHandler extends Thread {
                     String userName = (String) userDetails.get("username");
                     String password = (String) userDetails.get("password");
                     System.out.println("Authed new client!");
+                    clientCounter = clientCounter + 1;
+                    server_gui.jList1.removeAll();
+                    DefaultListModel dlm = new DefaultListModel();
+                    dlm.addElement(clientCounter);
+                    server_gui.jList1.setModel(dlm);
                     System.out.println(userName);
                     dos.writeBoolean(true);
                     Iotserver.clients.add(s);
@@ -55,6 +61,7 @@ public class ConnectionHandler extends Thread {
                 else {
                     System.out.println("Auth failed, closing connection!");
                     s.close();
+                    clientCounter = clientCounter - 1;
                     Thread.currentThread().interrupt();
                     
                 }
@@ -75,7 +82,12 @@ public class ConnectionHandler extends Thread {
                 }
             } catch (IOException exception) {
                 Iotserver.clients.remove(this.s);
-                System.out.println("Client disconected, terminate thead");
+                System.out.println("Client disconected, terminate thread");
+                clientCounter = clientCounter - 1;
+                server_gui.jList1.removeAll();
+                DefaultListModel dlm = new DefaultListModel();
+                dlm.addElement(clientCounter);
+                server_gui.jList1.setModel(dlm);
                 break; //client has disconnected, terminate this thread
             } catch (ParseException ex) {
                 Logger.getLogger(ConnectionHandler.class.getName()).log(Level.SEVERE, null, ex);
