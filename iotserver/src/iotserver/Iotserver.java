@@ -34,6 +34,9 @@ public class Iotserver {
     public static Vector clients = new  Vector();
     public static void main(String[] args) throws IOException {
         // server is listening on port 5056 
+        server_gui gui = new server_gui();
+        Thread t1 = new Thread(gui);
+        t1.start();
         Iotserver.setupLogger();
         logger_.info("log startup successful");
         ServerSocket ss = new ServerSocket(5056);
@@ -56,11 +59,11 @@ public class Iotserver {
             } catch (IOException ex) {
                 Logger.getLogger(Iotserver.class.getName()).log(Level.SEVERE, null, ex);
                 exit(0);
-                logger_.log(Level.SEVERE, "IOException Error",ex);
+                logger_.log(Level.SEVERE, "IOException Error, details: ",ex.getMessage());
             } 
             catch (ParseException ex) {
                 Logger.getLogger(Iotserver.class.getName()).log(Level.SEVERE, null, ex);
-                logger_.log(Level.SEVERE, "ParseException Error", ex);
+                logger_.log(Level.SEVERE, "ParseException Error, details: ", ex.getMessage());
             }
         }
         
