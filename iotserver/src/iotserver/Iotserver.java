@@ -34,7 +34,7 @@ public class Iotserver {
     public static void main(String[] args) {
         try {
             //connecting server gui to thread and initializing
-            server_gui gui = new server_gui();
+            ServerGui gui = new ServerGui();
             Thread sg1 = new Thread(gui);
             sg1.start();
             
@@ -56,7 +56,7 @@ public class Iotserver {
                     // obtaining input and out streams
                     //System.out.println("Assigning new thread for this client");
                     // create a new thread object
-                    Thread t = new ConnectionHandler(s);
+                    Thread t = new ConnectionHandler(s,gui);
                     // Invoking the start() method
                     t.start();
                     logger_.log(Level.INFO, "Connection confirmned");

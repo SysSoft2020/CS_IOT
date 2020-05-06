@@ -187,8 +187,8 @@ public class Message {
      * First parameter, weatherStationId must be a valid ID number of previously
      * present weather station on the system. Otherwise, adding
      * weatherStationData would fail and this function will return false.
-     *
-     * @param weatherStationId ID number of weather station this data belongs
+     * @param fieldName Name of the field to which new weather station is bound 
+     * @param sensorName ID number of weather station this data belongs
      * @param latitude Latitude position of a sensor
      * @param longitude Longitude position of a sensor
      * @param temperature Temperature
@@ -197,9 +197,10 @@ public class Message {
      * @param relativeHumidity Relative humidity, in percentage
      * @param airQualityIndex Air quality index
      */
-    public void addWeatherStationData(String weatherStationId,double latitude,double longitude, double temperature, double barometricPressure, double windSpeed, double relativeHumidity, double airQualityIndex) {
+    public void addWeatherStationData(String fieldName,String sensorName,double latitude,double longitude, double temperature, double barometricPressure, double windSpeed, double relativeHumidity, double airQualityIndex) {
         JSONObject fieldData = new JSONObject();
-        fieldData.put("weatherStation", weatherStationId);
+        fieldData.put("fieldName", fieldName);
+        fieldData.put("sensorName", sensorName);
         fieldData.put("temperature", temperature);
         fieldData.put("barometricPressure", barometricPressure);
         fieldData.put("windSpeed", windSpeed);

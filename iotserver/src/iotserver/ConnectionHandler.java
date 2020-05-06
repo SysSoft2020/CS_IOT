@@ -5,7 +5,6 @@ import java.net.*;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListModel;
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
@@ -14,10 +13,10 @@ public class ConnectionHandler extends Thread {
     final DataInputStream dis;
     final DataOutputStream dos;
     final Socket s;
-    static int clientCounter;
-
+    final ServerGui gui;
     // Constructor 
-    public ConnectionHandler(Socket s) throws IOException, ParseException {
+    public ConnectionHandler(Socket s, ServerGui _gui) throws IOException, ParseException {
+        this.gui = _gui;
         this.s = s;
         this.dis = new DataInputStream(s.getInputStream());
         this.dos = new DataOutputStream(s.getOutputStream());
@@ -44,7 +43,7 @@ public class ConnectionHandler extends Thread {
                     if (auth) {
                         Iotserver.clients.add(s);
                         System.out.println("Authed new client!");
-                        server_gui.ClientCounterIncrement();
+                        gui.ClientCounterIncrement();
                     } else {
                         s.close();
                         Thread.currentThread().interrupt();
@@ -78,6 +77,10 @@ public class ConnectionHandler extends Thread {
             } catch (IOException exception) {
                 Iotserver.clients.remove(this.s);
                 System.out.println("Client disconected, terminate thread");
+                if (auth){
+                    gui.ClientCounterDecrement();
+                    
+                }
                 
                 break; //client has disconnected, terminate this thread
             } catch (ParseException ex) {
