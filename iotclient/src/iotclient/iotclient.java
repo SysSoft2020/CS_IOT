@@ -6,6 +6,5 @@ public class iotclient {
         Gui gui = new Gui();
         Thread t1 = new Thread(gui);
         t1.start();
-
     }
 }

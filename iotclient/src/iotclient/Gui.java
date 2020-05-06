@@ -415,8 +415,8 @@ public class Gui extends javax.swing.JFrame implements Runnable {
 
             } catch (IOException | ParseException ex) {
                 Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
+                exit(0);
             }
-
         }
     }
 

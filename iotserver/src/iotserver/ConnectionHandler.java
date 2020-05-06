@@ -13,9 +13,10 @@ public class ConnectionHandler extends Thread {
     final DataInputStream dis;
     final DataOutputStream dos;
     final Socket s;
-
+    final ServerGui gui;
     // Constructor 
-    public ConnectionHandler(Socket s) throws IOException, ParseException {
+    public ConnectionHandler(Socket s, ServerGui _gui) throws IOException, ParseException {
+        this.gui = _gui;
         this.s = s;
         this.dis = new DataInputStream(s.getInputStream());
         this.dos = new DataOutputStream(s.getOutputStream());
@@ -24,7 +25,7 @@ public class ConnectionHandler extends Thread {
 
     @Override
     public void run() {
-
+        boolean auth = false;
         while (true) {
             try {
                 String received = dis.readUTF();
@@ -37,14 +38,15 @@ public class ConnectionHandler extends Thread {
                     String userName = (String) userDetails.get("username");
                     String password = (String) userDetails.get("password");
                     System.out.println(userName);
-                    boolean auth = this.authClient(userName, password);
+                    auth = this.authClient(userName, password);
                     dos.writeBoolean(auth);
                     if (auth) {
                         Iotserver.clients.add(s);
+                        System.out.println("Authed new client!");
+                        gui.ClientCounterIncrement();
                     } else {
                         s.close();
                         Thread.currentThread().interrupt();
-
                     }
 
                 } else if (message.containsKey("AUTHSENSOR")) {
@@ -57,7 +59,6 @@ public class ConnectionHandler extends Thread {
                     System.out.println("Auth failed, closing connection!");
                     s.close();
                     Thread.currentThread().interrupt();
-
                 }
 
                 while (true) {
@@ -75,7 +76,12 @@ public class ConnectionHandler extends Thread {
                 }
             } catch (IOException exception) {
                 Iotserver.clients.remove(this.s);
-                System.out.println("Client disconected, terminate thead");
+                System.out.println("Client disconected, terminate thread");
+                if (auth){
+                    gui.ClientCounterDecrement();
+                    
+                }
+                
                 break; //client has disconnected, terminate this thread
             } catch (ParseException ex) {
                 Logger.getLogger(ConnectionHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -90,7 +96,7 @@ public class ConnectionHandler extends Thread {
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             System.out.println(jsonObject);
             String pwd = (String) jsonObject.get(username);
-            if(pwd == null){
+            if (pwd == null) {
                 return false;
             }
             return (pwd.equals(password));
