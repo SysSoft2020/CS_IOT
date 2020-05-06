@@ -44,14 +44,7 @@ public class ConnectionHandler extends Thread {
                     if (auth) {
                         Iotserver.clients.add(s);
                         System.out.println("Authed new client!");
-                        //it would be nice if a function could be made like incrementClient(),
-                        //to minify the code inside a thead
-                        clientCounter = clientCounter + 1;
-                        server_gui.jList1.removeAll();
-                        DefaultListModel dlm = new DefaultListModel();
-                        dlm.addElement(clientCounter);
-                        server_gui.jList1.setModel(dlm);
-                        //*************************************************
+                        server_gui.ClientCounterIncrement();
                     } else {
                         s.close();
                         Thread.currentThread().interrupt();
@@ -85,16 +78,7 @@ public class ConnectionHandler extends Thread {
             } catch (IOException exception) {
                 Iotserver.clients.remove(this.s);
                 System.out.println("Client disconected, terminate thread");
-                if (auth) {
-                    //it would be nice if a function could be made like decrementClient(),
-                    //to minify the code inside a thead
-                    clientCounter = clientCounter - 1;
-                    server_gui.jList1.removeAll();
-                    DefaultListModel dlm = new DefaultListModel();
-                    dlm.addElement(clientCounter);
-                    server_gui.jList1.setModel(dlm);
-                    //*************************************************
-                }
+                
                 break; //client has disconnected, terminate this thread
             } catch (ParseException ex) {
                 Logger.getLogger(ConnectionHandler.class.getName()).log(Level.SEVERE, null, ex);

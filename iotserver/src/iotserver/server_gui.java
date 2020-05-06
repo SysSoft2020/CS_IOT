@@ -5,6 +5,7 @@
  */
 package iotserver;
 
+import static iotserver.ConnectionHandler.clientCounter;
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -144,6 +145,24 @@ public class server_gui extends javax.swing.JFrame implements Runnable {
         final int test = ConnectionHandler.clientCounter;
         DefaultListModel dlm = new DefaultListModel();
         dlm.addElement(test);
+        jList1.setModel(dlm);
+    }
+    
+    public void ClientCounterIncrement()
+    {
+        clientCounter = clientCounter + 1;
+        jList1.removeAll();
+        DefaultListModel dlm = new DefaultListModel();
+        dlm.addElement(clientCounter);
+        jList1.setModel(dlm);
+    }
+    
+    public void ClientCounterDecrement()
+    {
+        clientCounter = clientCounter - 1;
+        jList1.removeAll();
+        DefaultListModel dlm = new DefaultListModel();
+        dlm.addElement(clientCounter);
         jList1.setModel(dlm);
     }
 }
