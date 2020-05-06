@@ -33,15 +33,19 @@ public class Iotserver {
     
     public static Vector clients = new  Vector();
     public static void main(String[] args) throws IOException {
-        // server is listening on port 5056 
+        //connecting server gui to thread and initializing
         server_gui gui = new server_gui();
-        Thread t1 = new Thread(gui);
-        t1.start();
+        Thread sg1 = new Thread(gui);
+        sg1.start();
+        //setting up logger 
         Iotserver.setupLogger();
         logger_.info("log startup successful");
+        // server is listening on port 5056 
         ServerSocket ss = new ServerSocket(5056);
         // running infinite loop for getting client request 
         logger_.log(Level.SEVERE, "Waiting for connection between client and server to establish");
+        int clientCounter = 0;
+        
         while (true) {
             Socket s = null;
             try {
@@ -56,6 +60,7 @@ public class Iotserver {
                 // Invoking the start() method 
                 t.start();
                 logger_.log(Level.INFO, "Connection confirmned");
+                clientCounter = clientCounter + 1;
             } catch (IOException ex) {
                 Logger.getLogger(Iotserver.class.getName()).log(Level.SEVERE, null, ex);
                 exit(0);
@@ -65,7 +70,12 @@ public class Iotserver {
                 Logger.getLogger(Iotserver.class.getName()).log(Level.SEVERE, null, ex);
                 logger_.log(Level.SEVERE, "ParseException Error, details: ", ex.getMessage());
             }
+            if(ss.isClosed())
+            {
+                clientCounter = clientCounter - 1;
+            }
         }
+        
         
     }
 
