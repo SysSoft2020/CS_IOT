@@ -152,40 +152,10 @@ public class server_gui extends javax.swing.JFrame implements Runnable {
 
     @Override
     public void run() {
-        setupConnection();
         this.setVisible(true);
-        
         final int test = ConnectionHandler.clientCounter;
         DefaultListModel dlm = new DefaultListModel();
         dlm.addElement(test);
         jList1.setModel(dlm);
-
-        while (true) {
-            try {
-                System.out.println("Server GUI connected");
-                String received = dis.readUTF();
-                System.out.println(received);
-
-
-            } catch (IOException ex) {
-                Logger.getLogger(server_gui.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        }
-    }
-
-    private void setupConnection() {
-        try {
-            InetAddress ip = InetAddress.getByName("localhost");
-            this.s = new Socket(ip, 5056);
-            this.dis = new DataInputStream(s.getInputStream());
-            this.dos = new DataOutputStream(s.getOutputStream());
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(server_gui.class.getName()).log(Level.SEVERE, null, ex);
-            exit(0);
-        } catch (IOException ex) {
-            Logger.getLogger(server_gui.class.getName()).log(Level.SEVERE, null, ex);
-            exit(0);
-        }
     }
 }
