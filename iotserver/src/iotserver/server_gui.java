@@ -9,26 +9,15 @@ import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.*;
-import static java.lang.System.exit;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 
 
 
 public class server_gui extends javax.swing.JFrame implements Runnable {
-
-    DataInputStream dis;
-    DataOutputStream dos;
-    Socket s;
-
     public server_gui() {
         initComponents();
     }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -114,9 +103,7 @@ public class server_gui extends javax.swing.JFrame implements Runnable {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-    
-    
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //Refresh button code, displays updated content of log file
         jTextArea1.setText("");

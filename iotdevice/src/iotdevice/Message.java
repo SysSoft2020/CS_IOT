@@ -1,7 +1,6 @@
 package iotdevice;
 
 import org.json.simple.*;
-import org.json.simple.parser.*;
 import java.io.*;
 import static java.lang.System.exit;
 import java.net.*;
@@ -167,18 +166,12 @@ public class Message {
      * newly created weather station.
      *
      * @param fieldName Name of the field to which new weather station is bound
-     * @param longitude Geographical longitude of weather station
-     * @param latitude Geographical latitude of weather station
-     * @param serialNumber Serial number of weather station
-     * @return JSONObject containing data information for newly added weather
-     * station.
+     * @param sensorName Name of the sensor
      */
-    void addWeatherStation(String fieldName, double longitude, double latitude, String serialNumber) {
+    void addWeatherStation(String fieldName, String sensorName) {
         JSONObject fieldData = new JSONObject();
         fieldData.put("fieldName", fieldName);
-        fieldData.put("latitude", latitude);
-        fieldData.put("longitude", longitude);
-        fieldData.put("serialNumber", serialNumber);
+        fieldData.put("sensorName", sensorName);
         JSONObject request = new JSONObject();
         request.put("ADDWEATHERSTATION", fieldData);
         send(request);
@@ -196,15 +189,15 @@ public class Message {
      * weatherStationData would fail and this function will return false.
      *
      * @param weatherStationId ID number of weather station this data belongs
+     * @param latitude Latitude position of a sensor
+     * @param longitude Longitude position of a sensor
      * @param temperature Temperature
      * @param barometricPressure Barometric pressure
      * @param windSpeed Wind speed
      * @param relativeHumidity Relative humidity, in percentage
      * @param airQualityIndex Air quality index
-     * @return Boolean value, true if data is successfully entered in a
-     * database.
      */
-    public void addWeatherStationData(double weatherStationId, double temperature, double barometricPressure, double windSpeed, double relativeHumidity, double airQualityIndex) {
+    public void addWeatherStationData(String weatherStationId,double latitude,double longitude, double temperature, double barometricPressure, double windSpeed, double relativeHumidity, double airQualityIndex) {
         JSONObject fieldData = new JSONObject();
         fieldData.put("weatherStation", weatherStationId);
         fieldData.put("temperature", temperature);
