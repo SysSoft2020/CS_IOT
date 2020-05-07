@@ -12,7 +12,6 @@ public class IotDevice {
         try {
             msg.connectToServer();
             if (!msg.authSensor("sensor1", "password1")) {
-                System.out.println("Sensor credidentials are invalid");
                 exit(0);
             }
             while (true) {

@@ -474,11 +474,9 @@ public class Gui extends javax.swing.JFrame implements Runnable {
         }
 
         if (a) {
-            System.out.println("User authenticated");
             this.userAuthed = true;
             enableElements();
         } else {
-            System.out.println("Unable to auth user");
             this.userAuthed = false;
             JOptionPane.showMessageDialog(null, "Invalid password, program will now terminate!", "Invalid password", JOptionPane.INFORMATION_MESSAGE);
             exit(0);

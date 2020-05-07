@@ -55,7 +55,6 @@ public class Message {
             Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
             exit(0);
         }
-        System.out.println("Connection to server sucesfull");
     }
 
     /**
