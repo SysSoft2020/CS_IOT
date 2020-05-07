@@ -12,7 +12,6 @@ public class Message {
     /* Parameters that are going to get passed to message, so message
     can send itself just by being provided with socket parameters
      */
-    final boolean DEBUG = false;
     Socket socket;
     DataInputStream inputStream;
     DataOutputStream outputStream;
