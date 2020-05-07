@@ -1,6 +1,6 @@
 package iotclient;
 
-public class iotclient {
+public class IotClient {
 
     public static void main(String args[]) {
         Gui gui = new Gui();

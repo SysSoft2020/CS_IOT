@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import org.json.simple.parser.ParseException;
 
-public class Iotserver {
+public class IotServer {
 
     public final static Logger logger_ = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     public static void setupLogger()
@@ -39,7 +39,7 @@ public class Iotserver {
             sg1.start();
             
             //setting up logger
-            Iotserver.setupLogger();
+            IotServer.setupLogger();
             logger_.info("log startup successful");
             // server is listening on port 5056
             ServerSocket ss = new ServerSocket(5056);
@@ -61,17 +61,17 @@ public class Iotserver {
                     t.start();
                     logger_.log(Level.INFO, "Connection confirmned");
                 } catch (IOException ex) {
-                    Logger.getLogger(Iotserver.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(IotServer.class.getName()).log(Level.SEVERE, null, ex);
                     exit(0);
                     logger_.log(Level.SEVERE, "IOException Error, details: ",ex.getMessage());
                 }
                 catch (ParseException ex) {
-                    Logger.getLogger(Iotserver.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(IotServer.class.getName()).log(Level.SEVERE, null, ex);
                     logger_.log(Level.SEVERE, "ParseException Error, details: ", ex.getMessage());
                 }
             }
         } catch (IOException ex) {
-            Logger.getLogger(Iotserver.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IotServer.class.getName()).log(Level.SEVERE, null, ex);
             exit(0);
         }
         

@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.text.DefaultCaret;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -43,14 +44,25 @@ public class Gui extends javax.swing.JFrame implements Runnable {
         }
     }
 
-    public void addSensorDataToField(String fieldName, String sensorName, String sensorData) {
+    public void addSensorDataToField(String fieldName, String sensorName, double latitude, double longitude, double temperature, double barometricPressure, double windSpeed, double relativeHumidity, double airQualityIndex) {
         if (fields.containsKey(fieldName) == false) {
             addField(fieldName);
         }
         if (fields.get(fieldName).containsKey(sensorName) == false) {
             addSensorToField(fieldName, sensorName);
         }
-        fields.get(fieldName).get(sensorName).add(sensorData);
+
+        String data = "";
+        data += "Temperature: " + String.format("%.2f", temperature) + "°C \n";
+        data += "Barometric pressure: " + String.format("%.2f", barometricPressure) + " mBar \n";
+        data += "Wind Speed: " + String.format("%.2f", windSpeed) + " km/h \n";
+        data += "Relative humidity: " + String.format("%.2f", relativeHumidity) + "% \n";
+        data += "Air quality index: " + String.format("%.2f", airQualityIndex) + "\n";
+        data += "Latitude: " + String.format("%.4f", latitude) + "° \n";
+        data += "Longitude: " + String.format("%.4f", longitude) + "° \n";
+
+        data += "\n";
+        fields.get(fieldName).get(sensorName).add(data);
         try {
             String selectedField = String.valueOf(fieldSelectBox.getModel().getElementAt(fieldSelectBox.getSelectedIndex()));
             String selectedSensor = String.valueOf(sensorList.getModel().getElementAt(sensorList.getSelectedIndex()));
@@ -80,6 +92,8 @@ public class Gui extends javax.swing.JFrame implements Runnable {
     public Gui() {
         initComponents();
         disableElements();
+        DefaultCaret caret = (DefaultCaret)sensorDataField.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
     }
 
     /**
@@ -124,6 +138,7 @@ public class Gui extends javax.swing.JFrame implements Runnable {
 
         jLabel2.setText("WeatherStations ");
 
+        sensorDataField.setEditable(false);
         sensorDataField.setColumns(20);
         sensorDataField.setRows(5);
         jScrollPane2.setViewportView(sensorDataField);
@@ -325,9 +340,9 @@ public class Gui extends javax.swing.JFrame implements Runnable {
             DefaultListModel dlm = new DefaultListModel();
             HashMap< String, Vector> x = fields.get(selectedField);
             Set< String> a = x.keySet();
-            for (String c : a) {
+            a.forEach((c) -> {
                 dlm.addElement(c);
-            }
+            });
             sensorList.setModel(dlm);
         } catch (Exception e) {
         }
@@ -340,9 +355,9 @@ public class Gui extends javax.swing.JFrame implements Runnable {
             sensorDataField.append(sensorName);
             sensorDataField.append("\n");
             Vector v = fields.get(fieldName).get(sensorName);
-            for (Object o : v) {
+            v.forEach((o) -> {
                 sensorDataField.append((String) o);
-            }
+            });
 
         } catch (Exception e) {
 
@@ -390,25 +405,29 @@ public class Gui extends javax.swing.JFrame implements Runnable {
                 JSONObject message = (JSONObject) obj;
 
                 if (message.containsKey("FIELDADD")) {
-                    JSONObject fieldDetails = (JSONObject) message.get("FIELDADD");
-                    String fieldName = (String) fieldDetails.get("fieldName");
-                    //double latitude = (double) fieldDetails.get("latitude");
-                    //double longitude = (double) fieldDetails.get("longitude");
+                    JSONObject o = (JSONObject) message.get("FIELDADD");
+                    String fieldName = (String) o.get("fieldName");
+                    //double latitude = (double) o.get("latitude");
+                    //double longitude = (double) o.get("longitude");
                     this.addField(fieldName);
                 } else if (message.containsKey("ADDWEATHERSTATION")) {
-                    JSONObject weatherStationDetails = (JSONObject) message.get("ADDWEATHERSTATION");
-                    String fieldName = (String) weatherStationDetails.get("fieldName");
-                    String sensorName = (String) weatherStationDetails.get("sensorName");
+                    JSONObject o = (JSONObject) message.get("ADDWEATHERSTATION");
+                    String fieldName = (String) o.get("fieldName");
+                    String sensorName = (String) o.get("sensorName");
                     this.addSensorToField(fieldName, sensorName);
 
                 } else if (message.containsKey("ADDWEATHERSTATIONDATA")) {
-                    JSONObject weatherStationDataDetails = (JSONObject) message.get("ADDWEATHERSTATIONDATA");
-                    double weatherStation = (double) weatherStationDataDetails.get("weatherStation");
-                    double temperature = (double) weatherStationDataDetails.get("temperature");
-                    double barometricPressure = (double) weatherStationDataDetails.get("barometricPressure");
-                    double windSpeed = (double) weatherStationDataDetails.get("windSpeed");
-                    double relativeHumidity = (double) weatherStationDataDetails.get("relativeHumidity");
-                    double airQualityIndex = (double) weatherStationDataDetails.get("airQualityIndex");
+                    JSONObject o = (JSONObject) message.get("ADDWEATHERSTATIONDATA");
+                    String fieldName = (String) o.get("fieldName");
+                    String sensorName = (String) o.get("sensorName");
+                    double latitude = (double) o.get("latitude");
+                    double longitude = (double) o.get("longitude");
+                    double temperature = (double) o.get("temperature");
+                    double barometricPressure = (double) o.get("barometricPressure");
+                    double windSpeed = (double) o.get("windSpeed");
+                    double relativeHumidity = (double) o.get("relativeHumidity");
+                    double airQualityIndex = (double) o.get("airQualityIndex");
+                    this.addSensorDataToField(fieldName, sensorName, latitude, longitude, temperature, barometricPressure, windSpeed, relativeHumidity, airQualityIndex);
 
                 } else {
                 }
@@ -461,8 +480,7 @@ public class Gui extends javax.swing.JFrame implements Runnable {
         } else {
             System.out.println("Unable to auth user");
             this.userAuthed = false;
-                    JOptionPane.showMessageDialog(null, "Invalid password, program will now terminate!","Invalid password", JOptionPane.INFORMATION_MESSAGE);
-
+            JOptionPane.showMessageDialog(null, "Invalid password, program will now terminate!", "Invalid password", JOptionPane.INFORMATION_MESSAGE);
             exit(0);
         }
     }

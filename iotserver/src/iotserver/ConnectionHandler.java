@@ -41,7 +41,7 @@ public class ConnectionHandler extends Thread {
                     auth = this.authClient(userName, password);
                     dos.writeBoolean(auth);
                     if (auth) {
-                        Iotserver.clients.add(s);
+                        IotServer.clients.add(s);
                         System.out.println("Authed new client!");
                         gui.ClientCounterIncrement();
                     } else {
@@ -63,19 +63,19 @@ public class ConnectionHandler extends Thread {
 
                 while (true) {
                     received = dis.readUTF();
-                    Iterator i = Iotserver.clients.iterator();
+                    Iterator i = IotServer.clients.iterator();
                     while (i.hasNext()) {
                         Socket sock = (Socket) i.next();
                         try {
                             DataOutputStream output = new DataOutputStream(sock.getOutputStream());
                             output.writeUTF(received);
                         } catch (IOException e) {
-                            Iotserver.clients.remove(sock);
+                            IotServer.clients.remove(sock);
                         }
                     }
                 }
             } catch (IOException exception) {
-                Iotserver.clients.remove(this.s);
+                IotServer.clients.remove(this.s);
                 System.out.println("Client disconected, terminate thread");
                 if (auth){
                     gui.ClientCounterDecrement();
@@ -101,7 +101,7 @@ public class ConnectionHandler extends Thread {
             }
             return (pwd.equals(password));
         } catch (IOException ex) {
-            Logger.getLogger(Iotserver.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IotServer.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
             return false;
         }
