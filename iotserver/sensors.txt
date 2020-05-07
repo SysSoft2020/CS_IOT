@@ -1,0 +1,4 @@
+{
+	"sensor1":"password1",
+	"sensor2":"password2"
+}
