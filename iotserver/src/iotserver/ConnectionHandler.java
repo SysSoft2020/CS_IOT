@@ -38,28 +38,34 @@ public class ConnectionHandler extends Thread {
                     String userName = (String) userDetails.get("username");
                     String password = (String) userDetails.get("password");
                     auth = Authenticator.authClient(userName, password);
+                    Logs.Log.log(Level.INFO, "Authenticating user credentials...");
                     dos.writeBoolean(auth);
                     if (auth) {
                         IotServer.clients.add(s);
                         gui.ClientCounterIncrement();
+                        Logs.Log.log(Level.CONFIG, "Login approved, new client successfully connected");
                     } else {
                         s.close();
                         Thread.currentThread().interrupt();
+                        Logs.Log.log(Level.WARNING, "Incorrect credentials, client shutting down...");
                     }
 
                 } else if (message.containsKey("AUTHSENSOR")) {
                     JSONObject userDetails = (JSONObject) message.get("AUTHSENSOR");
                     String sensorName = (String) userDetails.get("sensorName");
                     String password = (String) userDetails.get("password");
+                    Logs.Log.log(Level.INFO, "Authenticating sensor credentials...");
                     boolean sensorAuth = Authenticator.authSensor(sensorName, password);
                     dos.writeBoolean(sensorAuth);
                     if (!sensorAuth) {
                         s.close();
                         Thread.currentThread().interrupt();
+                        Logs.Log.log(Level.SEVERE, "Sensor could not be authenticated, terminating...");
                     }
                 } else {
                     s.close();
                     Thread.currentThread().interrupt();
+                    Logs.Log.log(Level.WARNING, "Unexpected error, information is neither Sensor or User data");
                 }
 
                 while (true) {
@@ -67,6 +73,7 @@ public class ConnectionHandler extends Thread {
                     Iterator i = IotServer.clients.iterator();
                     while (i.hasNext()) {
                         Socket sock = (Socket) i.next();
+                        Logs.Log.log(Level.INFO, "New socket created, for further clients");
                         try {
                             DataOutputStream output = new DataOutputStream(sock.getOutputStream());
                             output.writeUTF(received);
