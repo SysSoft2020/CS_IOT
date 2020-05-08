@@ -407,8 +407,6 @@ public class Gui extends javax.swing.JFrame implements Runnable {
                 if (message.containsKey("FIELDADD")) {
                     JSONObject o = (JSONObject) message.get("FIELDADD");
                     String fieldName = (String) o.get("fieldName");
-                    //double latitude = (double) o.get("latitude");
-                    //double longitude = (double) o.get("longitude");
                     this.addField(fieldName);
                 } else if (message.containsKey("ADDWEATHERSTATION")) {
                     JSONObject o = (JSONObject) message.get("ADDWEATHERSTATION");
