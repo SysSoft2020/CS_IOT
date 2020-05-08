@@ -107,8 +107,10 @@ public class ServerGui extends javax.swing.JFrame implements Runnable {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //Refresh button code, displays updated content of log file
+        jTextArea1.setText("");
         File selFile = new File("serverLog.log");
         BufferedReader in;
+        
         try {
             in = new BufferedReader(new FileReader(selFile));
             String str;
