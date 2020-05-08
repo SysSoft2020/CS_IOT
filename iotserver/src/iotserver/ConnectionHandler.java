@@ -73,7 +73,6 @@ public class ConnectionHandler extends Thread {
                     Iterator i = IotServer.clients.iterator();
                     while (i.hasNext()) {
                         Socket sock = (Socket) i.next();
-                        Logs.Log.log(Level.INFO, "New socket created, for further clients");
                         try {
                             DataOutputStream output = new DataOutputStream(sock.getOutputStream());
                             output.writeUTF(received);
